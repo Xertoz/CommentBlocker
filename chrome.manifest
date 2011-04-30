@@ -1,0 +1,18 @@
+content   CommentBlocker                 chrome/content/
+skin      CommentBlocker   classic/1.0   chrome/skin/
+locale    CommentBlocker   cs            chrome/locale/cs/
+locale    CommentBlocker   de            chrome/locale/de/
+locale    CommentBlocker   en-US         chrome/locale/en-US/
+locale    CommentBlocker   et-EE         chrome/locale/et-EE/
+locale    CommentBlocker   fr            chrome/locale/fr/
+locale    CommentBlocker   ja-JP         chrome/locale/ja-JP/
+locale    CommentBlocker   nl            chrome/locale/nl/
+locale    CommentBlocker   pt-BR         chrome/locale/pt-BR/
+locale    CommentBlocker   sr            chrome/locale/sr/
+locale    CommentBlocker   sv-SE         chrome/locale/sv-SE/
+locale    CommentBlocker   tr-TR         chrome/locale/tr-TR/
+locale    CommentBlocker   uk-UA         chrome/locale/uk-UA/
+locale    CommentBlocker   zh-CN         chrome/locale/zh-CN/
+
+overlay   chrome://browser/content/browser.xul   chrome://CommentBlocker/content/ff-overlay.xul
+style chrome://global/content/customizeToolbar.xul chrome://CommentBlocker/skin/overlay.css

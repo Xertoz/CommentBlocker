@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CommentBlocker - Insertion</title>
+    </head>
+    <style type="text/css">
+        .CommentBlocker {
+            background:#ccc;
+        }
+    </style>
+    <script type="text/javascript">
+        var comments = 0;
+        
+        function insert() {
+            var comment = document.createElement('p');
+            comment.innerHTML = 'This is comment #'+(++comments);
+            comment.className = 'comment';
+            document.body.appendChild(comment);
+        }
+        
+        function remove() {
+            if (document.body.childNodes.length > 1)
+                document.body.removeChild(document.body.childNodes.item(document.body.childNodes.length-1));
+        }
+    </script>
+    <body>
+        <p><a href="javascript:insert();">Insert new comment</a> | <a href="javascript:remove();">Remove comment</a></p>
+    </body>
+</html>

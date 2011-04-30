@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "CommentBlocker Ayarları">
+<!ENTITY CommentBlocker.options.interface_behaviour "Seçim">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "Birşey yapma">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "Sol tık">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "Sağ tık">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "Kaydırma tuşu tık">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Yorumları değiştir">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Ayarları göster">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Güveni değiştir">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Sayfada yorum yapıldığında eklentiyi adres çubuğunda göster">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Eklentiyi her zaman durum çubuğunda göster">
+<!ENTITY CommentBlocker.options.interface_placement "Yerleştirme">
+<!ENTITY CommentBlocker.options.pane_interface "Arayüz">
+<!ENTITY CommentBlocker.options.pane_rules "Kurallar">
+<!ENTITY CommentBlocker.options.pane_websites "Siteler">
+<!ENTITY CommentBlocker.options.rules_block "Bu sitelerdeki tüm yorumları yasakla">
+<!ENTITY CommentBlocker.options.rules_listed "Listelenen siteler">
+<!ENTITY CommentBlocker.options.rules_trust "Bu sitelerdeki tüm yorumlara güven">
+<!ENTITY CommentBlocker.options.rules_unknown "Listelenmeyen siteler">
+<!ENTITY CommentBlocker.options.website "Website">

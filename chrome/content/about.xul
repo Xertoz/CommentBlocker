@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://CommentBlocker/locale/about.dtd">
+<dialog title="&CommentBlocker.about;" orient="vertical" autostretch="always" onload="sizeToContent()" buttons="accept" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+        <groupbox align="center" orient="horizontal">
+            <caption label="&CommentBlocker.about.creator;" />
+            <label value="Mattias Lindholm (en, sv-SE)" href="mailto:mattias@xertoz.se" class="text-link" />
+        </groupbox>
+        <groupbox align="center" orient="horizontal">
+            <caption label="&CommentBlocker.about.translators;" />
+            <hbox>
+                <vbox>
+                    <label value="Stanislav Horáček (cs)" href="http://www.babelzilla.org/forum/index.php?showuser=14422" class="text-link" />
+                    <label value="erglo (de)" href="http://www.babelzilla.org/forum/index.php?showuser=6554" class="text-link" />
+                    <label value="Fux (de)" href="http://www.babelzilla.org/forum/index.php?showuser=77" class="text-link" />
+                    <label value="Oliver Leisalu (et-ee)" href="http://oliverl.planet.ee/" class="text-link" />
+                    <label value="Goofy (fr)" href="http://www.babelzilla.org/forum/index.php?showuser=13" class="text-link" />
+                </vbox>
+                <vbox>
+                    <label value="Paul Berettoni (fr)" href="http://www.babelzilla.org/forum/index.php?showuser=15755" class="text-link" />
+                    <label value="nnnn (ja-JP)" href="http://nnnnn.me/" class="text-link" />
+                    <label value="markh (nl)" href="mailto:markh@babelzilla.org" class="text-link" />
+                    <label value="Edgard Dias Magalhaes (pt-BR)" href="http://www.babelzilla.org/forum/index.php?showuser=13492" class="text-link" />
+                    <label value="ДакСРБИЈА (sr)" href="http://www.babelzilla.org/forum/index.php?showuser=8719" class="text-link" />
+                </vbox>
+                <vbox>
+                    <label value="nikneyim (tr-TR)" href="http://www.babelzilla.org/forum/index.php?showuser=9415" class="text-link" />
+                    <label value="Володимир Савчук (uk-UA)" href="http://www.babelzilla.org/forum/index.php?showuser=9330" class="text-link" />
+                    <label value="BruceH (zh-CN)" href="http://www.babelzilla.org/forum/index.php?showuser=11879" class="text-link" />
+                </vbox>
+            </hbox>
+        </groupbox>
+</dialog>

@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "CommentBlocker Settings">
+<!ENTITY CommentBlocker.options.interface_behaviour "Behaviour">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "Do nothing">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "Left click">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "Right click">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "Scroll click">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Toggle comments">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Show settings">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Toggle trust">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Show the addon in the address bar when there are comments on the page">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Always show the addon in the status bar">
+<!ENTITY CommentBlocker.options.interface_placement "Placement">
+<!ENTITY CommentBlocker.options.pane_interface "Interface">
+<!ENTITY CommentBlocker.options.pane_rules "Rules">
+<!ENTITY CommentBlocker.options.pane_websites "Websites">
+<!ENTITY CommentBlocker.options.rules_block "Block all comments from these websites">
+<!ENTITY CommentBlocker.options.rules_listed "Listed websites">
+<!ENTITY CommentBlocker.options.rules_trust "Trust comments from these websites">
+<!ENTITY CommentBlocker.options.rules_unknown "Unlisted websites">
+<!ENTITY CommentBlocker.options.website "Website">

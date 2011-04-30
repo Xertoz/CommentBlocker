@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://CommentBlocker/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://CommentBlocker/locale/overlay.dtd">
+<overlay id="CommentBlocker-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script src="chrome://CommentBlocker/content/overlay.js"/>
+    <script src="chrome://CommentBlocker/content/gui.js"/>
+    <script src="chrome://CommentBlocker/content/parser.js"/>
+    <script src="chrome://CommentBlocker/content/listener.js"/>
+    <stringbundleset id="stringbundleset">
+        <stringbundle id="cbStrings" src="chrome://CommentBlocker/locale/overlay.properties"/>
+    </stringbundleset>
+    <commandset>
+        <command id="cbOptionsCommand" oncommand="window.openDialog('chrome://CommentBlocker/content/options.xul','','chrome,titlebar,toolbar,centerscreen,modal');" />
+    </commandset>
+    <menupopup id="menu_ToolsPopup">
+        <menuitem id="cbToolsMenu" label="CommentBlocker" command="cbOptionsCommand" insertafter="javascriptConsole" class="menuitem-iconic" image="chrome://CommentBlocker/skin/status_enabled_16.png" />
+    </menupopup>
+    <hbox id="urlbar-icons">
+        <image id="cbLocationBar" src="chrome://CommentBlocker/skin/status_enabled_16.png" width="16" height="16" hidden="true" tooltiptext="&CommentBlocker.initializing;" onclick="return CommentBlocker.listener.onClickIcon(event);" />
+    </hbox>
+    <statusbar id="status-bar">
+        <statusbarpanel id="cbStatusBar" hidden="true" role="button" tooltiptext="&CommentBlocker.initializing;">
+            <image id="cbStatusBarImage" src="chrome://CommentBlocker/skin/status_inactive_16.png" width="16" height="16" />
+        </statusbarpanel>
+    </statusbar>
+</overlay>

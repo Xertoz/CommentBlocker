@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "Configurações do CommentBlocker">
+<!ENTITY CommentBlocker.options.interface_behaviour "Comportamento">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "Não fazer nada">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "Clique esquerdo">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "Clique direito">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "Clique no scroll">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Fixar comentários">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Mostrar ajustes">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Confiar permanentemente">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Exibir a extensão na barra de endereços quando houver comentários na página">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Sempre exibir a extensão na barra de status">
+<!ENTITY CommentBlocker.options.interface_placement "Localização">
+<!ENTITY CommentBlocker.options.pane_interface "Interface">
+<!ENTITY CommentBlocker.options.pane_rules "Regras">
+<!ENTITY CommentBlocker.options.pane_websites "Páginas web">
+<!ENTITY CommentBlocker.options.rules_block "Bloquear todos os comentários das seguintes páginas">
+<!ENTITY CommentBlocker.options.rules_listed "Páginas listadas">
+<!ENTITY CommentBlocker.options.rules_trust "Confiar nos comentários das seguintes páginas">
+<!ENTITY CommentBlocker.options.rules_unknown "Páginas não listadas">
+<!ENTITY CommentBlocker.options.website "Página">

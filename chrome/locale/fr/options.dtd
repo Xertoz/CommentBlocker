@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "Paramètres de l&apos;extension CommentBlocker">
+<!ENTITY CommentBlocker.options.interface_behaviour "Comportement">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "Ne rien faire">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "Clic gauche">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "Clic droit">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "Clic milieu (molette)">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Activer/désactiver les commentaires">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Afficher les paramètres">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Activer/désactiver la confiance">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Afficher cette extension dans la barre **** de **** adresse lorsque des commentaires apparaissent sur la page">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Toujours afficher cette extension dans la barre de *****état">
+<!ENTITY CommentBlocker.options.interface_placement "Position">
+<!ENTITY CommentBlocker.options.pane_interface "Interface">
+<!ENTITY CommentBlocker.options.pane_rules "Règles">
+<!ENTITY CommentBlocker.options.pane_websites "Sites Web">
+<!ENTITY CommentBlocker.options.rules_block "Bloquer tous les commentaires venant de ces sites">
+<!ENTITY CommentBlocker.options.rules_listed "Sites Web listés">
+<!ENTITY CommentBlocker.options.rules_trust "Faire confiance aux commentaires venant de ces sites">
+<!ENTITY CommentBlocker.options.rules_unknown "Sites Web non listés">
+<!ENTITY CommentBlocker.options.website "Site Web">

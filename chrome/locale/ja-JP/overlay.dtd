@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "CommentBlockerの設定を読込中･･･">
+<!ENTITY CommentBlocker.icon.status.visible "コメントを表示中">
+<!ENTITY CommentBlocker.icon.status.hidden "コメントを隠し中(非表示中)">
+<!ENTITY CommentBlocker.icon.action.temporarily "このページのコメントを表示する">
+<!ENTITY CommentBlocker.icon.action.permanently "このサイトでは常にコメントを表示する">

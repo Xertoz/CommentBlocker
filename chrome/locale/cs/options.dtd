@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "Nastavení CommentBlockeru">
+<!ENTITY CommentBlocker.options.interface_behaviour "Chování">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "Nedělat nic">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "Klepnutí levým tlačítkem">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "Klepnutí pravým tlačítkem">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "Klepnutí kolečkem">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Přepnout komentáře">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Ukázat nastavení">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Přepnout to, zda se bude důvěřovat">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Ukazovat rozšíření v adresním řádku v případě, že jsou na stránce komentáře">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Vždy ukazovat rozšíření ve stavovém řádku">
+<!ENTITY CommentBlocker.options.interface_placement "Umístění">
+<!ENTITY CommentBlocker.options.pane_interface "Rozhraní">
+<!ENTITY CommentBlocker.options.pane_rules "Pravidla">
+<!ENTITY CommentBlocker.options.pane_websites "Stránky">
+<!ENTITY CommentBlocker.options.rules_block "Blokovat všechny komentáře z těchto stránek">
+<!ENTITY CommentBlocker.options.rules_listed "Stránky ze seznamu">
+<!ENTITY CommentBlocker.options.rules_trust "Důvěřovat komentářům z těchto stránek">
+<!ENTITY CommentBlocker.options.rules_unknown "Ostatní stránky">
+<!ENTITY CommentBlocker.options.website "Stránka">

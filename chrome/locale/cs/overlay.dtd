@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "CommentBlocker se nahrává...">
+<!ENTITY CommentBlocker.icon.status.visible "Komentáře jsou nyní viditelně">
+<!ENTITY CommentBlocker.icon.status.hidden "Komentáře jsou nyní skryty">
+<!ENTITY CommentBlocker.icon.action.temporarily "Zobrazit komentáře na této stránce">
+<!ENTITY CommentBlocker.icon.action.permanently "Vždy důvěřovat komentářům na této stránce">

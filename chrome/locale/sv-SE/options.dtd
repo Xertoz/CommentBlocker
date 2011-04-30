@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "Inställningar för CommentBlocker">
+<!ENTITY CommentBlocker.options.interface_behaviour "Beteende">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "Gör ingenting">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "Vänster musknapp">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "Höger musknapp">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "Scrollknapp">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Visa/Göm kommentarer">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Visa inställningar">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Betro/Misstänk webbsidan">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Visa tillägget i adressfältet när kommentarer finns på sidan">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Visa alltid tillägget i statusraden">
+<!ENTITY CommentBlocker.options.interface_placement "Placering">
+<!ENTITY CommentBlocker.options.pane_interface "Gränssnitt">
+<!ENTITY CommentBlocker.options.pane_rules "Regler">
+<!ENTITY CommentBlocker.options.pane_websites "Webbsidor">
+<!ENTITY CommentBlocker.options.rules_block "Blockera alla kommentarer från dessa webbsidor">
+<!ENTITY CommentBlocker.options.rules_listed "Listade webbsidor">
+<!ENTITY CommentBlocker.options.rules_trust "Lita på kommentarer från dessa webbsidor">
+<!ENTITY CommentBlocker.options.rules_unknown "Okända webbsidor">
+<!ENTITY CommentBlocker.options.website "Webbsida">

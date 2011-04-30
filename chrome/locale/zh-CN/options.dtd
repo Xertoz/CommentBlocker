@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "CommentBlocker 设置">
+<!ENTITY CommentBlocker.options.interface_behaviour "行为">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "什么也不做">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "左击">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "右击">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "滚轮点击">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "切换评论">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "显示设置">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "切换信任(trust)">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "当页面有评论时在地址栏显示此附加组件">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "总在状态栏显示此附加组件">
+<!ENTITY CommentBlocker.options.interface_placement "布局">
+<!ENTITY CommentBlocker.options.pane_interface "界面">
+<!ENTITY CommentBlocker.options.pane_rules "规则">
+<!ENTITY CommentBlocker.options.pane_websites "网站">
+<!ENTITY CommentBlocker.options.rules_block "拦截来自这些网站的评论">
+<!ENTITY CommentBlocker.options.rules_listed "登记的网站">
+<!ENTITY CommentBlocker.options.rules_trust "信任来自这些网站的评论">
+<!ENTITY CommentBlocker.options.rules_unknown "未登记的网站">
+<!ENTITY CommentBlocker.options.website "网站">

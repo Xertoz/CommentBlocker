@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "CommentBlocker - Einstellungen">
+<!ENTITY CommentBlocker.options.interface_behaviour "Verhalten">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "Nichts tun">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "Linksklick">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "Rechtsklick">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "Scrollen und Klicken">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Kommentare ein-/ausblenden">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Einstellungen anzeigen">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Vertrauenswürdigkeit ein-/ausblenden">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Das Add-on in der Adresszeile anzeigen, wenn Kommentare auf einer Seite vorhanden sind">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Das Add-on immer in der Statusleiste anzeigen">
+<!ENTITY CommentBlocker.options.interface_placement "Positionierung">
+<!ENTITY CommentBlocker.options.pane_interface "Benutzeroberfläche">
+<!ENTITY CommentBlocker.options.pane_rules "Regeln">
+<!ENTITY CommentBlocker.options.pane_websites "Webseiten">
+<!ENTITY CommentBlocker.options.rules_block "Alle Kommentare dieser Webseiten blockieren">
+<!ENTITY CommentBlocker.options.rules_listed "Aufgeführte Webseiten">
+<!ENTITY CommentBlocker.options.rules_trust "Kommentaren dieser Webseiten vertrauen">
+<!ENTITY CommentBlocker.options.rules_unknown "Nicht aufgeführte Webseiten">
+<!ENTITY CommentBlocker.options.website "Webseite">

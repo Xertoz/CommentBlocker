@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "CommentBlocker initialiseert…">
+<!ENTITY CommentBlocker.icon.status.visible "Opmerkingen zijn momenteel zichtbaar">
+<!ENTITY CommentBlocker.icon.status.hidden "Opmerkingen zijn momenteel verborgen">
+<!ENTITY CommentBlocker.icon.action.temporarily "Opmerkingen op deze pagina weergeven">
+<!ENTITY CommentBlocker.icon.action.permanently "Opmerkingen op deze website altijd vertrouwen">

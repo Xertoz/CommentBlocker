@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>commentblocker@xertoz.se</em:id>
+    <em:type>2</em:type>
+    <em:name>CommentBlocker</em:name>
+    <em:version>2.1.5</em:version>
+    <em:homepageURL>http://www.xertoz.se/</em:homepageURL>
+    <em:iconURL>chrome://CommentBlocker/skin/status_enabled.png</em:iconURL>
+    <em:creator>Mattias Lindholm</em:creator>
+    <em:contributor>http://www.wefunction.com/function-free-icon-set</em:contributor>
+    <em:description>Hide comments per default on websites and use a button to show them.</em:description>
+    <em:aboutURL>chrome://CommentBlocker/content/about.xul</em:aboutURL>
+    <em:optionsURL>chrome://CommentBlocker/content/options.xul</em:optionsURL>
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
+        <em:minVersion>3.6</em:minVersion>
+        <em:maxVersion>4.0</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+  </Description>
+</RDF>

@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "Commentblocker yükleniyor...">
+<!ENTITY CommentBlocker.icon.status.visible "Yorumlar şu an görünebilir">
+<!ENTITY CommentBlocker.icon.status.hidden "Yorumlar şu an gizlenmiş">
+<!ENTITY CommentBlocker.icon.action.temporarily "Bu sayfadaki yorumları göster">
+<!ENTITY CommentBlocker.icon.action.permanently "Bu sitedeki yorumlara her zaman göster">

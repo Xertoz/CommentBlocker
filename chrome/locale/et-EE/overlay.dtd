@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "CommentBlocker laeb...">
+<!ENTITY CommentBlocker.icon.status.visible "Kommentaarid on praegu nähtavad">
+<!ENTITY CommentBlocker.icon.status.hidden "Kommentaarid on praegu nähtamatud">
+<!ENTITY CommentBlocker.icon.action.temporarily "Näita kommentaare sellel lehel">
+<!ENTITY CommentBlocker.icon.action.permanently "Alati usalda kommentaare sellelt leheküljelt">

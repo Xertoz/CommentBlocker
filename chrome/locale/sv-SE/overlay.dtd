@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "CommentBlocker laddar...">
+<!ENTITY CommentBlocker.icon.status.visible "Kommentarer är för nuvarande synliga">
+<!ENTITY CommentBlocker.icon.status.hidden "Kommentarer är för nuvarande dolda">
+<!ENTITY CommentBlocker.icon.action.temporarily "Visa kommentarer på den här sidan">
+<!ENTITY CommentBlocker.icon.action.permanently "Lita alltid på kommentarer från den här siten">

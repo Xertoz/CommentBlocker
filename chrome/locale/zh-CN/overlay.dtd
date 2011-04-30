@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "CommentBlocker 正在载入...">
+<!ENTITY CommentBlocker.icon.status.visible "评论当前可见">
+<!ENTITY CommentBlocker.icon.status.hidden "评论当前隐藏">
+<!ENTITY CommentBlocker.icon.action.temporarily "显示此页面评论">
+<!ENTITY CommentBlocker.icon.action.permanently "总是信任这个网站的评论">

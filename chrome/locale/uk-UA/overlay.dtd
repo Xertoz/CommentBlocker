@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "CommentBlocker ініціалізується...">
+<!ENTITY CommentBlocker.icon.status.visible "Коментарі, наразі, відображені">
+<!ENTITY CommentBlocker.icon.status.hidden "Коментарі, наразі, приховані">
+<!ENTITY CommentBlocker.icon.action.temporarily "Показати коментарі на цій сторінці">
+<!ENTITY CommentBlocker.icon.action.permanently "Завжди довіряти коментарям на цій сторінці">

@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "Initialisation de CommentBlocker…">
+<!ENTITY CommentBlocker.icon.status.visible "Les commentaires sont actuellement visibles">
+<!ENTITY CommentBlocker.icon.status.hidden "Les commentaires actuellement masqués">
+<!ENTITY CommentBlocker.icon.action.temporarily "Afficher les commentaires sur cette page">
+<!ENTITY CommentBlocker.icon.action.permanently "Toujours afficher les commentaires sur ce site">

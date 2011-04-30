@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "CommentBlockeri Seaded">
+<!ENTITY CommentBlocker.options.interface_behaviour "Käitumine">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "Ära tee midagi">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "Vasak klõps">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "Parem klõps">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "Kerimis klõps">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Vaheta kommentaare">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Näita seadeid">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Vaheta usaldust">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Näita laiendust aadressiribal kui sel lehel on uusi kommentaare">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Alati näita laiendust olekuribal">
+<!ENTITY CommentBlocker.options.interface_placement "Paigutus">
+<!ENTITY CommentBlocker.options.pane_interface "Kujundus">
+<!ENTITY CommentBlocker.options.pane_rules "Reeglid">
+<!ENTITY CommentBlocker.options.pane_websites "Veebilehed">
+<!ENTITY CommentBlocker.options.rules_block "Blokeeri kõik kommentaarid nendelt lehekülgedelt">
+<!ENTITY CommentBlocker.options.rules_listed "Loetletud veebilehed">
+<!ENTITY CommentBlocker.options.rules_trust "Usalda kommentaare nendelt veebilehtedelt">
+<!ENTITY CommentBlocker.options.rules_unknown "Loetlematta veebilehed">
+<!ENTITY CommentBlocker.options.website "Veebileht">

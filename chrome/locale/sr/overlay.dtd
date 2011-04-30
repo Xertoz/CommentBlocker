@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "Блокатор коментара се учитава...">
+<!ENTITY CommentBlocker.icon.status.visible "Коментари су тренутно видљиви">
+<!ENTITY CommentBlocker.icon.status.hidden "Коментари су тренутно сакривени">
+<!ENTITY CommentBlocker.icon.action.temporarily "Прикажи коментаре на овој страници">
+<!ENTITY CommentBlocker.icon.action.permanently "Увек веруј коментарима на овој страници">

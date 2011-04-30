@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "Налаштування CommentBlocker">
+<!ENTITY CommentBlocker.options.interface_behaviour "Поведінка">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "Нічого не робити">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "Клацання лівої кнопки миші">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "Клацання правої кнопки миші">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "Клацання середньої кнопки миші">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Перемикач коментарів">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Показувати налаштування">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Перемикач довіри">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Показувати додаток у адресній панелі коли є коментарі на сторінці">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Завжди показувати додаток у рядку стану">
+<!ENTITY CommentBlocker.options.interface_placement "Розміщення">
+<!ENTITY CommentBlocker.options.pane_interface "Вигляд">
+<!ENTITY CommentBlocker.options.pane_rules "Правила">
+<!ENTITY CommentBlocker.options.pane_websites "Веб-сайти">
+<!ENTITY CommentBlocker.options.rules_block "Блокувати усі коментарі з цього веб-сайту">
+<!ENTITY CommentBlocker.options.rules_listed "Додані у список веб-сайти">
+<!ENTITY CommentBlocker.options.rules_trust "Довіряти коментарям з цих веб-сайтів">
+<!ENTITY CommentBlocker.options.rules_unknown "Не додані у список веб-сайти">
+<!ENTITY CommentBlocker.options.website "Веб-сайт">

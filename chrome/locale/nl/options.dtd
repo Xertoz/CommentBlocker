@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "CommentBlocker-instellingen">
+<!ENTITY CommentBlocker.options.interface_behaviour "Gedrag">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "Niets doen">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "Klik">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "Rechtsklik">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "Middelklik">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Opmerkingen wisselen">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Instellingen weergeven">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Vertrouwen wisselen">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Add-on in de adresbalk weergeven als er opmerkingen op de pagina zijn">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Add-on altijd in de statusbalk weergeven">
+<!ENTITY CommentBlocker.options.interface_placement "Plaatsing">
+<!ENTITY CommentBlocker.options.pane_interface "Interface">
+<!ENTITY CommentBlocker.options.pane_rules "Regels">
+<!ENTITY CommentBlocker.options.pane_websites "Websites">
+<!ENTITY CommentBlocker.options.rules_block "Alle opmerkingen van deze websites blokkeren">
+<!ENTITY CommentBlocker.options.rules_listed "Websites-lijst">
+<!ENTITY CommentBlocker.options.rules_trust "Opmerkingen van deze websites vertrouwen">
+<!ENTITY CommentBlocker.options.rules_unknown "Websites niet op lijst">
+<!ENTITY CommentBlocker.options.website "Website">

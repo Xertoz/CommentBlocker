@@ -1,0 +1,20 @@
+<!ENTITY CommentBlocker.options "Подешавања блокатора коментара">
+<!ENTITY CommentBlocker.options.interface_behaviour "Понашање">
+<!ENTITY CommentBlocker.options.interface_behaviour_donothing "ништа">
+<!ENTITY CommentBlocker.options.interface_behaviour_leftclick "леви клик">
+<!ENTITY CommentBlocker.options.interface_behaviour_rightclick "десни клик">
+<!ENTITY CommentBlocker.options.interface_behaviour_scrollclick "клик точкићем">
+<!ENTITY CommentBlocker.options.interface_behaviour_togglecomments "Укључи/искључи коментаре">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Прикажи подешавања">
+<!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Увек веруј">
+<!ENTITY CommentBlocker.options.interface_display_locationbar "Када на овој страници има коментара, прикажи икону додатка у траци за адресу">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Увек прикажу икону додатка у статусној траци">
+<!ENTITY CommentBlocker.options.interface_placement "Постављање">
+<!ENTITY CommentBlocker.options.pane_interface "Сучеље">
+<!ENTITY CommentBlocker.options.pane_rules "Правила">
+<!ENTITY CommentBlocker.options.pane_websites "Странице">
+<!ENTITY CommentBlocker.options.rules_block "Блокирај све коментаре са ови страница">
+<!ENTITY CommentBlocker.options.rules_listed "наведене странице">
+<!ENTITY CommentBlocker.options.rules_trust "Веруј коментарима са ових страница">
+<!ENTITY CommentBlocker.options.rules_unknown "ненаведене странице">
+<!ENTITY CommentBlocker.options.website "Страница">

@@ -1,0 +1,5 @@
+<!ENTITY CommentBlocker.initializing "CommentBlocker is loading...">
+<!ENTITY CommentBlocker.icon.status.visible "Comments are currently visible">
+<!ENTITY CommentBlocker.icon.status.hidden "Comments are currently hidden">
+<!ENTITY CommentBlocker.icon.action.temporarily "Show comments on this page">
+<!ENTITY CommentBlocker.icon.action.permanently "Always trust comments from this website">
