@@ -2,6 +2,19 @@ CommentBlocker.parser = {
     // This XPath string will find all relevant new comment elements
     __xpath: '//*[not(contains(@class,"CommentBlocker")) and (contains(translate(@class,"COMENT","coment"),"comment") or contains(translate(@id,"COMENT","coment"),"comment"))]',
     
+    // Return the amount of affected elements
+    comments: function(elem) {
+        var count = 0;
+        
+        if (typeof(elem.className) != 'undefined' && elem.className.indexOf('CommentBlocker') >= 0)
+            count++;
+        
+        for (var i=0;i<elem.childNodes.length;i++)
+            count += CommentBlocker.parser.comments(elem.childNodes.item(i));
+        
+        return count;
+    },
+    
     // Parse an element and its child for comment elements
     parse: function(elem,update) {
         if (typeof(elem.className) != 'undefined' && elem.className.indexOf('comment') >= 0)
@@ -73,6 +86,11 @@ CommentBlocker.parser = {
             doc.addEventListener('DOMAttrModified',function(e) {
                 if (!e.originalTarget.ownerDocument.CommentBlocker.working && e.originalTarget.ownerDocument.CommentBlocker.enabled)
                     CommentBlocker.parser.jailGuard(e.originalTarget);
+            },false);
+            
+            doc.addEventListener('submit',function(e) {
+                if (e.originalTarget.ownerDocument.CommentBlocker.enabled && CommentBlocker.parser.comments(e.originalTarget))
+                    CommentBlocker.parser.stopSubmission(e);
             },false);
         },false);
     },
@@ -170,5 +188,30 @@ CommentBlocker.parser = {
             CommentBlocker.parser.hideElement(elem.ownerDocument,n);
         else
             CommentBlocker.parser.updateElement(elem.ownerDocument,n);
+    },
+    
+    // Stop submission of a form that's got blocked elements
+    stopSubmission: function(evt) {
+        // First off, stop the submission!
+        evt.stopPropagation();
+        evt.preventDefault();
+        
+        // Secondly, show a notification that we did.
+        var nb = gBrowser.getNotificationBox();
+        if (n = nb.getNotificationWithValue('commentblocker-dangerous-form'))
+            n.label = message;
+        else
+            nb.appendNotification(
+                CommentBlocker.strings.getString('submissionDenied'),
+                'commentblocker-dangerous-form',
+                'chrome://commentblocker/skin/status_enabled_16.png',
+                nb.PRIORITY_WARNING_HIGH,
+                [{
+                    label: CommentBlocker.strings.getString('show'),
+                    accessKey: 'S',
+                    popup: null,
+                    callback: CommentBlocker.parser.show
+                }]
+            );
     }
 };
