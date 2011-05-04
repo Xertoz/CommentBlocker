@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CommentBlocker - Form</title>
+        <script type="text/javascript">
+            window.addEventListener('load',function() {
+                var form = document.createElement('form');
+                form.action = '#';
+                
+                var text = document.createElement('input');
+                text.type = 'text';
+                text.name = 'comment';
+                text.className = 'comment';
+                form.appendChild(text);
+                
+                var submit = document.createElement('input');
+                submit.type = 'submit';
+                submit.value = 'Comment!';
+                form.appendChild(submit);
+                
+                document.body.appendChild(form);
+            },false);
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

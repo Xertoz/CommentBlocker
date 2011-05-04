@@ -4,7 +4,7 @@
     <em:id>commentblocker@xertoz.se</em:id>
     <em:type>2</em:type>
     <em:name>CommentBlocker</em:name>
-    <em:version>2.1.5</em:version>
+    <em:version>2.2a1</em:version>
     <em:homepageURL>http://www.xertoz.se/</em:homepageURL>
     <em:iconURL>chrome://CommentBlocker/skin/status_enabled.png</em:iconURL>
     <em:creator>Mattias Lindholm</em:creator>
