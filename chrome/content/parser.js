@@ -91,7 +91,7 @@ CommentBlocker.parser = {
             doc.addEventListener('submit',function(e) {
                 if (e.originalTarget.ownerDocument.CommentBlocker.enabled && CommentBlocker.parser.comments(e.originalTarget))
                     CommentBlocker.parser.stopSubmission(e);
-            },false);
+            },true);
         },false);
     },
     
