@@ -76,22 +76,7 @@ CommentBlocker.listener = {
     onStatusChange: function(aBrowser){
         CommentBlocker.parser.touch(aBrowser.contentDocument);
         CommentBlocker.gui.update(aBrowser.contentDocument);
-    },
-    
-    /**
-    * Empty (but required) event listener due to Mozilla restrictions
-    */
-    onSecurityChange: function() {},
-    
-    /**
-    * Empty (but required) event listener due to Mozilla restrictions
-    */
-    onProgressChange: function() {},
-    
-    /**
-    * Empty (but required) event listener due to Mozilla restrictions
-    */
-    onStateChange: function() {}
+    }
 };
 
 // Hook events when the addon finishes loading
