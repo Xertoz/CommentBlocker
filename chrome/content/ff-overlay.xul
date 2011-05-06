@@ -16,7 +16,7 @@
         <menuitem id="cbToolsMenu" label="CommentBlocker" command="cbOptionsCommand" insertafter="javascriptConsole" class="menuitem-iconic" image="chrome://CommentBlocker/skin/status_enabled_16.png" />
     </menupopup>
     <hbox id="urlbar-icons">
-        <image id="cbLocationBar" src="chrome://CommentBlocker/skin/status_enabled_16.png" width="16" height="16" hidden="true" tooltiptext="&CommentBlocker.initializing;" onclick="return CommentBlocker.listener.onClickIcon(event);" />
+        <image id="cbLocationBar" src="chrome://CommentBlocker/skin/status_enabled_16.png" width="16" height="16" hidden="true" tooltiptext="&CommentBlocker.initializing;" />
     </hbox>
     <statusbar id="status-bar">
         <statusbarpanel id="cbStatusBar" hidden="true" role="button" tooltiptext="&CommentBlocker.initializing;">

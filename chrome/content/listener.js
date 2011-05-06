@@ -58,7 +58,8 @@ CommentBlocker.listener = {
         
         CommentBlocker.gui.update(gBrowser.contentDocument);
         
-        return false;
+        event.stopPropagation();
+        event.preventDefault();
     },
     
     /**
@@ -97,6 +98,6 @@ CommentBlocker.listener = {
 window.addEventListener('load',function() {
     gBrowser.addTabsProgressListener(CommentBlocker.listener);
     gBrowser.tabContainer.addEventListener('TabSelect',CommentBlocker.listener.onChangeTab,false);
-    //document.getElementById('cbLocationBar').addEventListener('click',CommentBlocker.listener.onClickIcon,false); Nowadays found in the onclick attribute to prevent bubbling
+    document.getElementById('cbLocationBar').addEventListener('click',CommentBlocker.listener.onClickIcon,false);
     document.getElementById('cbStatusBar').addEventListener('click',CommentBlocker.listener.onClickIcon,false);
 },false);
