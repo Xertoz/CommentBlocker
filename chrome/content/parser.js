@@ -17,7 +17,7 @@ CommentBlocker.parser = {
     
     // Parse an element and its child for comment elements
     parse: function(elem,update) {
-        if (typeof(elem.className) != 'undefined' && elem.className.indexOf('comment') >= 0)
+        if ((typeof(elem.className) != 'undefined' && elem.className.indexOf('comment') >= 0) || (typeof(elem.id) != 'undefined' && elem.id.indexOf('comment') >= 0))
             CommentBlocker.parser.initElement(elem);
         
         for (var i=0;i<elem.childNodes.length;i++)
