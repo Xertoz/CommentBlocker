@@ -8,7 +8,7 @@
 <!ENTITY CommentBlocker.options.interface_behaviour_toggleoptions "Instellingen weergeven">
 <!ENTITY CommentBlocker.options.interface_behaviour_toggletrust "Vertrouwen wisselen">
 <!ENTITY CommentBlocker.options.interface_display_locationbar "Add-on in de adresbalk weergeven als er opmerkingen op de pagina zijn">
-<!ENTITY CommentBlocker.options.interface_display_statusbar "Add-on altijd in de statusbalk weergeven">
+<!ENTITY CommentBlocker.options.interface_display_statusbar "Add-on altijd in de statusbalk/add-onbalk weergeven">
 <!ENTITY CommentBlocker.options.interface_placement "Plaatsing">
 <!ENTITY CommentBlocker.options.pane_interface "Interface">
 <!ENTITY CommentBlocker.options.pane_rules "Regels">
