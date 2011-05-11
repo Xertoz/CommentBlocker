@@ -20,7 +20,7 @@
     </hbox>
     <statusbar id="status-bar">
         <statusbarpanel id="cbStatusBar" hidden="true" role="button" tooltiptext="&CommentBlocker.initializing;">
-            <image id="cbStatusBarImage" src="chrome://CommentBlocker/skin/status_inactive_16.png" width="16" height="16" />
+            <image id="cbStatusBarImage" src="chrome://CommentBlocker/skin/status_inactive_16.png" mousethrough="never" width="16" height="16" />
         </statusbarpanel>
     </statusbar>
 </overlay>
