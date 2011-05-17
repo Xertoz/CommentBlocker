@@ -1,5 +1,15 @@
+# Firefox
+overlay   chrome://browser/content/browser.xul             chrome://CommentBlocker/content/ff-overlay.xul    application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
+style     chrome://global/content/customizeToolbar.xul     chrome://CommentBlocker/skin/overlay.css
+
+# Fennec
+overlay   chrome://browser/content/browser.xul      chrome://CommentBlocker/content/fennec/overlay.xul application={a23983c0-fd0e-11dc-95ff-0800200c9a66}
+
+# Design
 content   CommentBlocker                 chrome/content/
 skin      CommentBlocker   classic/1.0   chrome/skin/
+
+# Locales
 locale    CommentBlocker   cs            chrome/locale/cs/
 locale    CommentBlocker   de            chrome/locale/de/
 locale    CommentBlocker   en-US         chrome/locale/en-US/
@@ -13,6 +23,3 @@ locale    CommentBlocker   sv-SE         chrome/locale/sv-SE/
 locale    CommentBlocker   tr-TR         chrome/locale/tr-TR/
 locale    CommentBlocker   uk-UA         chrome/locale/uk-UA/
 locale    CommentBlocker   zh-CN         chrome/locale/zh-CN/
-
-overlay   chrome://browser/content/browser.xul   chrome://CommentBlocker/content/ff-overlay.xul
-style chrome://global/content/customizeToolbar.xul chrome://CommentBlocker/skin/overlay.css
