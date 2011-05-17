@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="chrome://CommentBlocker/skin/overlay.css" type="text/css"?>
 <!DOCTYPE overlay SYSTEM "chrome://CommentBlocker/locale/overlay.dtd">
 <overlay id="CommentBlocker-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <script src="chrome://CommentBlocker/content/firefox/overlay.js"/>
