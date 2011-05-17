@@ -10,11 +10,6 @@ var CommentBlocker = {
     settings: null,
     
     /**
-    * The addon's localized strings
-    */
-    strings: null,
-    
-    /**
     * The parser API
     */
     parser: {},
@@ -34,10 +29,6 @@ var CommentBlocker = {
 * Load the configuration
 */
 CommentBlocker.configure = function() {
-    // Show status bar?
-    /*if (typeof(CommentBlocker.gui) != 'undefined')
-        CommentBlocker.gui.showStatusBar(CommentBlocker.settings.getBoolPref('interface_display_statusbar'));*/
-    
     // Load list of sites
     CommentBlocker.websites = CommentBlocker.settings.getCharPref('websites').split(',');
 };
@@ -75,9 +66,6 @@ CommentBlocker.isTrusted = function(hostname) {
 * This module's onload event
 */
 CommentBlocker.load = function() {
-    // Get strings
-    // CommentBlocker.strings = document.getElementById('cbStrings');
-    
     // Grab preferences
     CommentBlocker.settings = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.CommentBlocker.");
     CommentBlocker.settings.QueryInterface(Components.interfaces.nsIPrefBranch2);
@@ -85,6 +73,18 @@ CommentBlocker.load = function() {
     
     // Configure
     CommentBlocker.configure();
+};
+
+/**
+* Observe preference changes
+*/
+CommentBlocker.observe = function(aSubject, aTopic, aData) {
+    switch (aData) {
+        case 'websites':
+        case 'interface_display_statusbar':
+            CommentBlocker.loadConfig();
+            break;
+    }
 };
 
 /**
@@ -220,6 +220,13 @@ CommentBlocker.parser.updateElement = function(document,i) {
 };
 
 /**
+* Save listed websites to string
+*/
+CommentBlocker.saveListed = function() {
+    CommentBlocker.settings.setCharPref('websites',CommentBlocker.websites.join(','));
+};
+
+/**
 * Invert show/hide status on document
 */
 CommentBlocker.toggleComments = function(document) {
@@ -227,7 +234,25 @@ CommentBlocker.toggleComments = function(document) {
         CommentBlocker.parser.show(document);
     else
         CommentBlocker.parser.hide(document);
-},
+};
+
+/**
+* Toggle listing status of a website
+*/
+CommentBlocker.toggleListed = function(hostname) {
+    for (var i=0;i<CommentBlocker.websites.length;i++)
+        if (CommentBlocker.websites[i] == hostname) {
+            CommentBlocker.websites.splice(i,1);
+            
+            CommentBlocker.saveListed();
+            
+            return;
+        }
+    
+    CommentBlocker.websites.push(hostname);
+    
+    CommentBlocker.saveListed();
+};
 
 // Finally, run the load event
 CommentBlocker.load();
