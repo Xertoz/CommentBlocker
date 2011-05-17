@@ -1,35 +1,40 @@
 window.addEventListener('load',function() {
-    try {
-        // Load CommentBlocker!
-        Components.utils.import('chrome://CommentBlocker/content/application.jsm');
-        
-        // Handle everything else in child processes
-        messageManager.loadFrameScript('chrome://CommentBlocker/content/fennec/frame.js',true);
-        
-        /*messageManager.addMessageListener("Content:LocationChange",function(aMessage) {
-            document.getElementById('cbToolbarButton').image = 'chrome://CommentBlocker/skin/status_disabled.png';
-        });
-        
-        messageManager.addMessageListener("Content:StateChange",function() {
+    // Load CommentBlocker!
+    Components.utils.import('chrome://CommentBlocker/content/application.jsm');
+    
+    // Handle everything else in child processes
+    messageManager.loadFrameScript('chrome://CommentBlocker/content/fennec/frame.js',true);
+    
+    // Listen for parsed messages from the children
+    messageManager.addMessageListener('CommentBlocker:DocumentParsed',function(aMessage) {
+        if (aMessage.json.comments) {
             document.getElementById('cbToolbarButton').image = 'chrome://CommentBlocker/skin/status_enabled.png';
             document.getElementById('cbToolbarButton').disabled = false;
-        });
-        
-        document.getElementById('browsers').addEventListener('load', function(evt) {
-            dump("Load hooked\n");
-            CommentBlocker.parser.initDocument(evt.target);
-            CommentBlocker.parser.touch(evt.target);
-            dump("Found "+CommentBlocker.parser.comments(evt.target)+" comments\n");
-            dump("Load finished\n");
-        },true);
-        
-        document.getElementById('tabs').addEventListener('TabOpen', function(evt) {
-            dump("Open hooked\n");
-            dump(evt.originalTarget.browser);
-            dump("Open finished\n");
-        },true);*/
-    }
-    catch (e) {
-        dump('E: '+e);
-    }
+        }
+        else {
+            document.getElementById('cbToolbarButton').image = 'chrome://CommentBlocker/skin/status_inactive.png';
+            document.getElementById('cbToolbarButton').disabled = true;
+        }
+    });
+    
+    // Listen for toggling of comments
+    messageManager.addMessageListener('CommentBlocker:ToggleComments',function(aMessage) {
+        if (aMessage.json.comments.length == 0) {
+            document.getElementById('cbToolbarButton').image = 'chrome://CommentBlocker/skin/status_inactive.png';
+            document.getElementById('cbToolbarButton').disabled = true;
+        }
+        else if (aMessage.json.enabled) {
+            document.getElementById('cbToolbarButton').image = 'chrome://CommentBlocker/skin/status_enabled.png';
+            document.getElementById('cbToolbarButton').disabled = false;
+        }
+        else {
+            document.getElementById('cbToolbarButton').image = 'chrome://CommentBlocker/skin/status_disabled.png';
+            document.getElementById('cbToolbarButton').disabled = false;
+        }
+    });
+    
+    // Make sure we have the right toolbar button when changing tabs
+    document.getElementById('tabs').addEventListener('TabSelect',function(evt) {
+        Browser.selectedBrowser.messageManager.sendAsyncMessage('CommentBlocker:TabSelected');
+    },false);
 },false);

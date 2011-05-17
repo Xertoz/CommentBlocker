@@ -5,11 +5,6 @@ var EXPORTED_SYMBOLS = ['CommentBlocker'];
 */
 var CommentBlocker = {
     /**
-    * The listening API
-    */
-    listener: {},
-    
-    /**
     * The addon's settings
     */
     settings: null,
@@ -79,7 +74,7 @@ CommentBlocker.isTrusted = function(hostname) {
 /**
 * This module's onload event
 */
-CommentBlocker.listener.loadModule = function() {
+CommentBlocker.load = function() {
     // Get strings
     // CommentBlocker.strings = document.getElementById('cbStrings');
     
@@ -105,7 +100,30 @@ CommentBlocker.parser.comments = function(elem) {
         count += CommentBlocker.parser.comments(elem.childNodes.item(i));
     
     return count;
-},
+};
+
+/**
+* Hide all elements
+*/
+CommentBlocker.parser.hide = function(document) {
+    document.CommentBlocker.working = true;
+    document.CommentBlocker.enabled = true;
+    
+    for (var i=0;i<document.CommentBlocker.comments.length;i++)
+        CommentBlocker.parser.hideElement(document,i);
+    
+    document.CommentBlocker.working = false;
+};
+
+/**
+* Hide an element
+*/
+CommentBlocker.parser.hideElement = function(document,i) {
+    if (document.CommentBlocker.comments[i].element.style.display != 'none') {
+        CommentBlocker.parser.updateElement(document,i);
+        document.CommentBlocker.comments[i].element.style.display = 'none';
+    }
+};
 
 /**
 * Initialize a document for being supervised by CommentBlocker
@@ -142,7 +160,7 @@ CommentBlocker.parser.initElement = function(elem) {
     
     // Hide it!
     if (elem.ownerDocument.CommentBlocker.enabled)
-        elem.style.background = 'green';//CommentBlocker.parser.hideElement(elem.ownerDocument,elem.ownerDocument.CommentBlocker.comments.length-1);
+        CommentBlocker.parser.hideElement(elem.ownerDocument,elem.ownerDocument.CommentBlocker.comments.length-1);
 },
 
 /**
@@ -153,6 +171,26 @@ CommentBlocker.parser.isInitialized = function(obj) {
         return false;
     return true;
 };
+
+/**
+* Show all elements
+*/
+CommentBlocker.parser.show = function(document) {
+    document.CommentBlocker.working = true;
+    document.CommentBlocker.enabled = false;
+    
+    for (var i=0;i<document.CommentBlocker.comments.length;i++)
+        CommentBlocker.parser.showElement(document,i);
+    
+    document.CommentBlocker.working = false;
+};
+
+/**
+* Show an element
+*/
+CommentBlocker.parser.showElement = function(document,i) {
+    document.CommentBlocker.comments[i].element.style.display = document.CommentBlocker.comments[i].display;
+},
 
 /**
 * Touching a document is to tag all not earlier tagged comment elements with the CommentBlocker class
@@ -171,10 +209,25 @@ CommentBlocker.parser.touch = function(document) {
     for (var i=0;i<comments.snapshotLength;i++)
         CommentBlocker.parser.initElement(comments.snapshotItem(i));
     
-    //CommentBlocker.gui.update(doc);
-    
     document.CommentBlocker.working = false;
+};
+
+/**
+* Update an element's status
+*/
+CommentBlocker.parser.updateElement = function(document,i) {
+    document.CommentBlocker.comments[i].display = document.CommentBlocker.comments[i].element.style.display;
+};
+
+/**
+* Invert show/hide status on document
+*/
+CommentBlocker.toggleComments = function(document) {
+    if (document.CommentBlocker.enabled == true)
+        CommentBlocker.parser.show(document);
+    else
+        CommentBlocker.parser.hide(document);
 },
 
 // Finally, run the load event
-CommentBlocker.listener.loadModule();
+CommentBlocker.load();
