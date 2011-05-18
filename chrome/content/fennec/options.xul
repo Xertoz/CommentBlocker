@@ -1,7 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay SYSTEM "chrome://CommentBlocker/locale/options.dtd">
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <setting pref="extensions.CommentBlocker.websites" type="control" title="&CommentBlocker.options.website;">
+    <label value="test" />
+    <setting type="control" title="&CommentBlocker.options.rules_listed;">
+        <setting pref="extensions.CommentBlocker.rules_listed_display" type="bool" title="&CommentBlocker.options.rules_trust;" />
+    </setting>
+    <setting type="control" title="&CommentBlocker.options.rules_unknown;">
+        <setting pref="extensions.CommentBlocker.rules_unknown_display" type="bool" title="&CommentBlocker.options.rules_trust;" />
+    </setting>
+    <setting type="control" title="&CommentBlocker.options.website;">
         <vbox width="100%">
             <listbox id="cbWebsites">
                 <listhead>
