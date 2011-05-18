@@ -6,10 +6,7 @@ addEventListener('load',function(evt) {
     CommentBlocker.parser.initDocument(evt.target);
     CommentBlocker.parser.touch(evt.target);
     
-    sendAsyncMessage('CommentBlocker:DocumentParsed',{
-        comments: CommentBlocker.parser.comments(evt.target),
-        document: evt.target
-    });
+    sendAsyncMessage('CommentBlocker:DocumentParsed',content.document.CommentBlocker);
 },true);
 
 // When the toggle request is issued

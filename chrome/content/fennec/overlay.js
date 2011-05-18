@@ -124,7 +124,7 @@ window.addEventListener('load',function() {
     
     // Listen for parsed messages from the children
     messageManager.addMessageListener('CommentBlocker:DocumentParsed',function(aMessage) {
-        if (aMessage.json.comments) {
+        if (aMessage.json.comments.length) {
             if (aMessage.json.enabled)
                 CommentBlocker.gui.toolbar.setEnabled();
             else
@@ -136,12 +136,14 @@ window.addEventListener('load',function() {
     
     // Listen for toggling of comments
     messageManager.addMessageListener('CommentBlocker:ToggleComments',function(aMessage) {
-        if (aMessage.json.comments.length == 0)
-            CommentBlocker.gui.toolbar.setInactive();
-        else if (aMessage.json.enabled)
-            CommentBlocker.gui.toolbar.setEnabled();
+        if (aMessage.json.comments.length) {
+            if (aMessage.json.enabled)
+                CommentBlocker.gui.toolbar.setEnabled();
+            else
+                CommentBlocker.gui.toolbar.setDisabled();
+        }
         else
-            CommentBlocker.gui.toolbar.setDisabled();
+            CommentBlocker.gui.toolbar.setInactive();
     });
     
     // Make sure we have the right toolbar button when changing tabs
