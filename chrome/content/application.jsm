@@ -35,7 +35,8 @@ var CommentBlocker = {
 */
 CommentBlocker.configure = function() {
     // Load list of sites
-    CommentBlocker.websites = CommentBlocker.settings.getCharPref('websites').split(',');
+    CommentBlocker.websites = CommentBlocker.settings.getCharPref('websites');
+    CommentBlocker.websites = CommentBlocker.websites.length ? CommentBlocker.websites.split(',') : new Array();
 };
 
 /**
