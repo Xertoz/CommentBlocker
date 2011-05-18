@@ -2,9 +2,6 @@
 <!DOCTYPE overlay SYSTEM "chrome://CommentBlocker/locale/overlay.dtd">
 <overlay id="CommentBlocker-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <script src="chrome://CommentBlocker/content/firefox/overlay.js"/>
-    <stringbundleset id="stringbundleset">
-        <stringbundle id="cbStrings" src="chrome://CommentBlocker/locale/overlay.properties"/>
-    </stringbundleset>
     <commandset>
         <command id="cbOptionsCommand" oncommand="CommentBlocker.gui.showPreferences();" />
     </commandset>
