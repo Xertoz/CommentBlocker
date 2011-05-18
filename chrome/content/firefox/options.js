@@ -1,3 +1,6 @@
+// Load CommentBlocker!
+Components.utils.import('chrome://CommentBlocker/content/application.jsm');
+
 /**
 * Manage options for the addon
 * 
@@ -23,9 +26,6 @@ CommentBlocker.options = {
     },
     
     loadWebsites: function() {
-        CommentBlocker.onLoad();
-        CommentBlocker.loadConfig();
-        
         for (var i=0;i<CommentBlocker.websites.length;i++) {
                 var e = document.createElement('listitem'); 
                 e.setAttribute('label',CommentBlocker.websites[i]);

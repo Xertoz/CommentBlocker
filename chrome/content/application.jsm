@@ -90,7 +90,7 @@ CommentBlocker.observe = function(aSubject, aTopic, aData) {
     switch (aData) {
         case 'websites':
         case 'interface_display_statusbar':
-            CommentBlocker.loadConfig();
+            CommentBlocker.configure();
             break;
     }
 };
