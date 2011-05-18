@@ -10,6 +10,11 @@ var CommentBlocker = {
     settings: null,
     
     /**
+    * The addon's strings
+    */
+    strings: null,
+    
+    /**
     * The parser API
     */
     parser: {},
@@ -66,6 +71,9 @@ CommentBlocker.isTrusted = function(hostname) {
 * This module's onload event
 */
 CommentBlocker.load = function() {
+    // Get the strings
+    CommentBlocker.strings = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle('chrome://CommentBlocker/locale/overlay.properties');
+    
     // Grab preferences
     CommentBlocker.settings = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.CommentBlocker.");
     CommentBlocker.settings.QueryInterface(Components.interfaces.nsIPrefBranch2);
@@ -135,6 +143,27 @@ CommentBlocker.parser.initDocument = function(document) {
         enabled: !CommentBlocker.isTrusted(document.location.hostname),
         working: false
     };
+    
+    // Listen for events when loaded
+    //document.addEventListener('DOMContentLoaded',function() {
+        document.addEventListener('DOMNodeInserted',function(evt) {
+            CommentBlocker.parser.parse(evt.originalTarget,true);
+        },false);
+        
+        document.addEventListener('DOMNodeRemoved',function(evt) {
+            CommentBlocker.parser.remove(evt.originalTarget,true);
+        },false);
+        
+        document.addEventListener('DOMAttrModified',function(evt) {
+            if (!evt.originalTarget.ownerDocument.CommentBlocker.working && evt.originalTarget.ownerDocument.CommentBlocker.enabled)
+                CommentBlocker.parser.jailGuard(evt.originalTarget);
+        },false);
+        
+        document.addEventListener('submit',function(e) {
+            if (e.originalTarget.ownerDocument.CommentBlocker.enabled && CommentBlocker.parser.comments(e.originalTarget))
+                CommentBlocker.parser.stopSubmission(e);
+        },true);
+    //},false);
 };
     
 /**
@@ -173,6 +202,57 @@ CommentBlocker.parser.isInitialized = function(obj) {
 };
 
 /**
+* When DOM attributes change - make sure CommentBlocker rules stick
+*/
+CommentBlocker.parser.jailGuard = function(elem) {
+    if (elem.className.indexOf('CommentBlocker') == -1)
+        return;
+    
+    var n = -1;
+    
+    for (var i=0;i<elem.ownerDocument.CommentBlocker.comments.length;i++)
+        if (elem.ownerDocument.CommentBlocker.comments[i].element == elem)
+            n = i;
+    
+    if (n == -1)
+        return;
+    
+    if (elem.ownerDocument.CommentBlocker.enabled == true)
+        CommentBlocker.parser.hideElement(elem.ownerDocument,n);
+    else
+        CommentBlocker.parser.updateElement(elem.ownerDocument,n);
+};
+
+// Parse an element and its child for comment elements
+CommentBlocker.parser.parse = function(elem,update) {
+    if ((typeof(elem.className) != 'undefined' && elem.className.indexOf('comment') >= 0) || (typeof(elem.id) != 'undefined' && elem.id.indexOf('comment') >= 0))
+        CommentBlocker.parser.initElement(elem);
+    
+    for (var i=0;i<elem.childNodes.length;i++)
+        CommentBlocker.parser.parse(elem.childNodes.item(i),false);
+    
+    if (update)
+        CommentBlocker.gui.update(elem.ownerDocument);
+};
+
+// Remove an elemnt from the comments list
+CommentBlocker.parser.remove = function(elem,update) {
+    if (CommentBlocker.parser.isInitialized(elem)); {
+        var comments = elem.ownerDocument.CommentBlocker.comments;
+        
+        for (var i=0;i<comments.length;i++)
+            if (comments[i].element === elem)
+                comments.splice(i,1);
+    }
+    
+    for (var i=0;i<elem.childNodes.length;i++)
+        CommentBlocker.parser.parse(elem.childNodes.item(i),false);
+    
+    if (update)
+        CommentBlocker.gui.update(elem.ownerDocument);
+};
+
+/**
 * Show all elements
 */
 CommentBlocker.parser.show = function(document) {
@@ -190,7 +270,17 @@ CommentBlocker.parser.show = function(document) {
 */
 CommentBlocker.parser.showElement = function(document,i) {
     document.CommentBlocker.comments[i].element.style.display = document.CommentBlocker.comments[i].display;
-},
+};
+
+// Stop submission of a form that's got blocked elements
+CommentBlocker.parser.stopSubmission = function(evt) {
+    // First off, stop the submission!
+    evt.stopPropagation();
+    evt.preventDefault();
+    
+    // Secondly, show a notification that we did.
+    CommentBlocker.gui.stopSubmission(evt.originalTarget.ownerDocument);
+};
 
 /**
 * Touching a document is to tag all not earlier tagged comment elements with the CommentBlocker class

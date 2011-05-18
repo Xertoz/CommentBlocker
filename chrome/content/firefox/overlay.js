@@ -30,6 +30,31 @@ CommentBlocker.gui = {
     },
     
     /**
+    * Show a notification that we have stopped a submission
+    */
+    stopSubmission: function(doc) {
+        var n;
+        var nb = gBrowser.getNotificationBox();
+        if (n = nb.getNotificationWithValue('commentblocker-dangerous-form'))
+            n.label = message;
+        else
+            nb.appendNotification(
+                CommentBlocker.strings.GetStringFromName('submissionDenied'),
+                'commentblocker-dangerous-form',
+                'chrome://commentblocker/skin/status_enabled_16.png',
+                nb.PRIORITY_WARNING_HIGH,
+                [{
+                    label: CommentBlocker.strings.GetStringFromName('show'),
+                    accessKey: 'S',
+                    popup: null,
+                    callback: function() {
+                        CommentBlocker.parser.show(doc);
+                    }
+                }]
+            );
+    },
+    
+    /**
     * Update the UI interface
     */
     update: function(doc) {
@@ -54,12 +79,12 @@ CommentBlocker.gui = {
         if (comments) {
             document.getElementById('cbLocationBar').src = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
             document.getElementById('cbStatusBarImage').src = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
-            document.getElementById('cbLocationBar').tooltipText = (enabled ? document.getElementById('cbStrings').getString('enabled') : document.getElementById('cbStrings').getString('disabled'));
-            document.getElementById('cbStatusBarImage').tooltipText = (enabled ? document.getElementById('cbStrings').getString('enabled') : document.getElementById('cbStrings').getString('disabled'));
+            document.getElementById('cbLocationBar').tooltipText = (enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled'));
+            document.getElementById('cbStatusBarImage').tooltipText = (enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled'));
         }
         else {
             document.getElementById('cbStatusBarImage').src = 'chrome://CommentBlocker/skin/status_inactive_16.png';
-            document.getElementById('cbStatusBarImage').tooltipText = document.getElementById('cbStrings').getString('inactive');
+            document.getElementById('cbStatusBarImage').tooltipText = CommentBlocker.strings.GetStringFromName('inactive');
         }
     }
 };
