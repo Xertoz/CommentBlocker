@@ -11,6 +11,19 @@
     <em:contributor>http://www.wefunction.com/function-free-icon-set</em:contributor>
     <em:description>Hide comments per default on websites and use a button to show them.</em:description>
     <em:optionsURL>chrome://CommentBlocker/content/options.xul</em:optionsURL>
+    <em:translator>mozillazg</em:translator>
+    <em:translator>Volodymyr Savchuk</em:translator>
+    <em:translator>nikneyim</em:translator>
+    <em:translator>ДакСРБИЈА</em:translator>
+    <em:translator>Edgard Dias Magalhaes</em:translator>
+    <em:translator>markh</em:translator>
+    <em:translator>nnnnn</em:translator>
+    <em:translator>Goofy</em:translator>
+    <em:translator>Paul Berettoni</em:translator>
+    <em:translator>Oliver Leisalu</em:translator>
+    <em:translator>Fux</em:translator>
+    <em:translator>erglo</em:translator>
+    <em:translator>Stanislav Horáček</em:translator>
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
