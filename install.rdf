@@ -34,7 +34,7 @@
     <em:targetApplication>
       <!-- Fennec -->
       <Description>
-        <em:id>{a23983c0-fd0e-11dc-95ff-0800200c9a66}</em:id>
+        <em:id>{a23983c0-fd0e-11dc-95ff-0800200c9a66}</em:id> <!-- Fennec -->
         <em:minVersion>4.0</em:minVersion>
         <em:maxVersion>6.0a1</em:maxVersion>
       </Description>
