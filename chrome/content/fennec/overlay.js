@@ -2,9 +2,14 @@
 Components.utils.import('chrome://CommentBlocker/content/application.jsm');
 
 /**
+* CommentBlocker's Fennec overlay object for this window
+*/
+var cbOverlay = {};
+
+/**
 * CommentBlocker's GUI API for Firefox
 */
-CommentBlocker.gui = {
+cbOverlay.gui = {
     /**
     * Show a notification that we have stopped a submission
     */
@@ -69,7 +74,7 @@ CommentBlocker.gui = {
         
         // For failsafe, hide the icon if CommentBlocker is not initialized
         if (!CommentBlocker.parser.isInitialized(doc))
-            return CommentBlocker.gui.toolbar.setInactive();
+            return cbOverlay.gui.toolbar.setInactive();
         
         // Find out wether this site is trusted / enabled
         var trusted = CommentBlocker.isTrusted(doc);
@@ -79,19 +84,19 @@ CommentBlocker.gui = {
         // Update icon image & text
         if (comments) {
             if (enabled)
-                CommentBlocker.gui.toolbar.setEnabled();
+                cbOverlay.gui.toolbar.setEnabled();
             else
-                CommentBlocker.gui.toolbar.setDisabled();
+                cbOverlay.gui.toolbar.setDisabled();
         }
         else
-            CommentBlocker.gui.toolbar.setInactive();
+            cbOverlay.gui.toolbar.setInactive();
     }
 };
 
 /**
 * Manage options for the addon
 */
-CommentBlocker.options = {
+cbOverlay.options = {
     addWebsite: function() {
         var hostname = prompt('URL:');
         
@@ -122,28 +127,31 @@ window.addEventListener('load',function() {
     // Handle everything else in child processes
     messageManager.loadFrameScript('chrome://CommentBlocker/content/fennec/frame.js',true);
     
+    // Send the overlay object
+    messageManager.sendAsyncMessage('CommentBlocker:Overlay',cbOverlay);
+    
     // Listen for parsed messages from the children
     messageManager.addMessageListener('CommentBlocker:DocumentParsed',function(aMessage) {
         if (aMessage.json.comments.length) {
             if (aMessage.json.enabled)
-                CommentBlocker.gui.toolbar.setEnabled();
+                cbOverlay.gui.toolbar.setEnabled();
             else
-                CommentBlocker.gui.toolbar.setDisabled();
+                cbOverlay.gui.toolbar.setDisabled();
         }
         else
-            CommentBlocker.gui.toolbar.setInactive();
+            cbOverlay.gui.toolbar.setInactive();
     });
     
     // Listen for toggling of comments
     messageManager.addMessageListener('CommentBlocker:ToggleComments',function(aMessage) {
         if (aMessage.json.comments.length) {
             if (aMessage.json.enabled)
-                CommentBlocker.gui.toolbar.setEnabled();
+                cbOverlay.gui.toolbar.setEnabled();
             else
-                CommentBlocker.gui.toolbar.setDisabled();
+                cbOverlay.gui.toolbar.setDisabled();
         }
         else
-            CommentBlocker.gui.toolbar.setInactive();
+            cbOverlay.gui.toolbar.setInactive();
     });
     
     // Make sure we have the right toolbar button when changing tabs
@@ -154,6 +162,6 @@ window.addEventListener('load',function() {
     // Load websites into the preferences
     document.addEventListener('AddonOptionsLoad',function(evt) {
         if (evt.target.id == 'urn:mozilla:item:commentblocker@xertoz.se')
-            CommentBlocker.options.loadWebsites();
+            cbOverlay.options.loadWebsites();
     },false);
 },false);

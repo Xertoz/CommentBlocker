@@ -137,9 +137,10 @@ CommentBlocker.parser.hideElement = function(document,i) {
 /**
 * Initialize a document for being supervised by CommentBlocker
 */
-CommentBlocker.parser.initDocument = function(document) {
+CommentBlocker.parser.initDocument = function(document,callback) {
     // CommentBlocker settings for this document
     document.CommentBlocker = {
+        callback: callback,
         comments: new Array(),
         enabled: !CommentBlocker.isTrusted(document.location.hostname),
         working: false
@@ -233,7 +234,7 @@ CommentBlocker.parser.parse = function(elem,update) {
         CommentBlocker.parser.parse(elem.childNodes.item(i),false);
     
     if (update)
-        CommentBlocker.gui.update(elem.ownerDocument);
+        elem.ownerDocument.CommentBlocker.callback.gui.update(elem.ownerDocument);
 };
 
 // Remove an elemnt from the comments list
@@ -250,7 +251,7 @@ CommentBlocker.parser.remove = function(elem,update) {
         CommentBlocker.parser.parse(elem.childNodes.item(i),false);
     
     if (update)
-        CommentBlocker.gui.update(elem.ownerDocument);
+        elem.ownerDocument.CommentBlocker.callback.gui.update(elem.ownerDocument);
 };
 
 /**
@@ -280,7 +281,7 @@ CommentBlocker.parser.stopSubmission = function(evt) {
     evt.preventDefault();
     
     // Secondly, show a notification that we did.
-    CommentBlocker.gui.stopSubmission(evt.originalTarget.ownerDocument);
+    evt.originalTarget.ownerDocument.CommentBlocker.callback.gui.stopSubmission(evt.originalTarget.ownerDocument);
 };
 
 /**

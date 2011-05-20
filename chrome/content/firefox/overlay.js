@@ -2,9 +2,14 @@
 Components.utils.import('chrome://CommentBlocker/content/application.jsm');
 
 /**
+* CommentBlocker's Firefox overlay object for this window
+*/
+var cbOverlay = {};
+
+/**
 * CommentBlocker's GUI API for Firefox
 */
-CommentBlocker.gui = {
+cbOverlay.gui = {
     /**
     * Show the location bar
     */
@@ -73,7 +78,7 @@ CommentBlocker.gui = {
         var comments = gBrowser.contentDocument.CommentBlocker.comments.length > 0;
         
         // If there are no comments on this page, do not show the icon
-        CommentBlocker.gui.showLocationBar(comments);
+        cbOverlay.gui.showLocationBar(comments);
         
         // Update icon image & text
         if (comments) {
@@ -92,12 +97,12 @@ CommentBlocker.gui = {
 /**
 * CommentBlocker's listening API for Firefox
 */
-CommentBlocker.listener = {
+cbOverlay.listener = {
     /**
     * Whenever the user switches to a new tab in the browser, update the status bar icon
     */
     onChangeTab: function(e) {
-        CommentBlocker.gui.update(gBrowser.contentDocument);
+        cbOverlay.gui.update(gBrowser.contentDocument);
     },
     
     /**
@@ -138,11 +143,11 @@ CommentBlocker.listener = {
             break;
             
             case 3:
-                CommentBlocker.gui.showPreferences();
+                cbOverlay.gui.showPreferences();
             break;
         }
         
-        CommentBlocker.gui.update(gBrowser.contentDocument);
+        cbOverlay.gui.update(gBrowser.contentDocument);
         
         event.stopPropagation();
         event.preventDefault();
@@ -153,7 +158,7 @@ CommentBlocker.listener = {
     */
     onLocationChange: function(aBrowser) {
         if (typeof(aBrowser.contentDocument.CommentBlocker) == 'undefined')
-            CommentBlocker.parser.initDocument(aBrowser.contentDocument);
+            CommentBlocker.parser.initDocument(aBrowser.contentDocument,cbOverlay);
     },
     
     /**
@@ -161,18 +166,18 @@ CommentBlocker.listener = {
     */
     onStatusChange: function(aBrowser){
         CommentBlocker.parser.touch(aBrowser.contentDocument);
-        CommentBlocker.gui.update(aBrowser.contentDocument);
+        cbOverlay.gui.update(aBrowser.contentDocument);
     }
 };
 
 // When finished loading...
 window.addEventListener('load',function() {
     // Do we show the status bar icon?
-    CommentBlocker.gui.showStatusBar(CommentBlocker.settings.getBoolPref('interface_display_statusbar'));
+    cbOverlay.gui.showStatusBar(CommentBlocker.settings.getBoolPref('interface_display_statusbar'));
     
     // Hook all our events to Firefox
-    gBrowser.addTabsProgressListener(CommentBlocker.listener);
-    gBrowser.tabContainer.addEventListener('TabSelect',CommentBlocker.listener.onChangeTab,false);
-    document.getElementById('cbLocationBar').addEventListener('click',CommentBlocker.listener.onClickIcon,false);
-    document.getElementById('cbStatusBar').addEventListener('click',CommentBlocker.listener.onClickIcon,false);
+    gBrowser.addTabsProgressListener(cbOverlay.listener);
+    gBrowser.tabContainer.addEventListener('TabSelect',cbOverlay.listener.onChangeTab,false);
+    document.getElementById('cbLocationBar').addEventListener('click',cbOverlay.listener.onClickIcon,false);
+    document.getElementById('cbStatusBar').addEventListener('click',cbOverlay.listener.onClickIcon,false);
 },false);
