@@ -38,10 +38,10 @@ cbOverlay.gui = {
     * Show a notification that we have stopped a submission
     */
     stopSubmission: function(doc) {
-        var n;
         var nb = gBrowser.getNotificationBox();
-        if (n = nb.getNotificationWithValue('commentblocker-dangerous-form'))
-            n.label = message;
+        var n = nb.getNotificationWithValue('commentblocker-dangerous-form');
+        if (n)
+            n.label = CommentBlocker.strings.GetStringFromName('submissionDenied');
         else
             nb.appendNotification(
                 CommentBlocker.strings.GetStringFromName('submissionDenied'),

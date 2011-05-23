@@ -14,11 +14,11 @@ cbOverlay.gui = {
     * Show a notification that we have stopped a submission
     */
     stopSubmission: function(doc) {
-        var n;
         var nb = Browser.getNotificationBox();
-        if (n = nb.getNotificationWithValue('commentblocker-dangerous-form'))
-            n.label = message;
-        else {
+        var n = nb.getNotificationWithValue('commentblocker-dangerous-form');
+        if (n)
+            n.label = CommentBlocker.strings.GetStringFromName('submissionDenied');
+        else
             nb.appendNotification(
                 CommentBlocker.strings.GetStringFromName('submissionDenied'),
                 'commentblocker-dangerous-form',
@@ -29,11 +29,10 @@ cbOverlay.gui = {
                     accessKey: 'S',
                     popup: null,
                     callback: function() {
-                        CommentBlocker.parser.show(doc);
+                        CommentBlocker.parser.show(Browser.selectedBrowser.contentDocument);
                     }
                 }]
             );
-        }
     },
     
     /**
@@ -127,9 +126,6 @@ window.addEventListener('load',function() {
     // Handle everything else in child processes
     messageManager.loadFrameScript('chrome://CommentBlocker/content/fennec/frame.js',true);
     
-    // Send the overlay object
-    messageManager.sendAsyncMessage('CommentBlocker:Overlay',cbOverlay);
-    
     // Listen for parsed messages from the children
     messageManager.addMessageListener('CommentBlocker:DocumentParsed',function(aMessage) {
         if (aMessage.json.comments.length) {
@@ -152,6 +148,11 @@ window.addEventListener('load',function() {
         }
         else
             cbOverlay.gui.toolbar.setInactive();
+    });
+    
+    // Listen for form submissions to be stopped
+    messageManager.addMessageListener('CommentBlocker:StopSubmission',function(aMessage) {
+        cbOverlay.gui.stopSubmission(aMessage.json);
     });
     
     // Make sure we have the right toolbar button when changing tabs

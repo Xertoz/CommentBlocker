@@ -1,20 +1,25 @@
 // Load CommentBlocker!
 Components.utils.import('chrome://CommentBlocker/content/application.jsm');
 
-var overlay;
+var callback = {
+    gui: {
+        stopSubmission: function(doc) {
+            sendAsyncMessage('CommentBlocker:StopSubmission',doc);
+        },
+        
+        update: function(doc) {
+            sendAsyncMessage('CommentBlocker:ToggleComments',doc.CommentBlocker);
+        }
+    }
+}
 
 // Whenever a page is loaded - parse it
 addEventListener('load',function(evt) {
-    CommentBlocker.parser.initDocument(evt.target,overlay);
+    CommentBlocker.parser.initDocument(evt.target,callback);
     CommentBlocker.parser.touch(evt.target);
     
     sendAsyncMessage('CommentBlocker:DocumentParsed',content.document.CommentBlocker);
 },true);
-
-// When the overlay is sent to us
-addMessageListener('CommentBlocker:Overlay',function(aMessage) {
-    overlay = aMessage.json;
-});
 
 // When the toggle request is issued
 addMessageListener('CommentBlocker:ToggleComments',function(aMessage) {
