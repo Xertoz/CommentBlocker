@@ -3,7 +3,7 @@
 <overlay id="CommentBlocker-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <script src="chrome://CommentBlocker/content/firefox/overlay.js"/>
     <commandset>
-        <command id="cbOptionsCommand" oncommand="CommentBlocker.gui.showPreferences();" />
+        <command id="cbOptionsCommand" oncommand="cbOverlay.gui.showPreferences();" />
     </commandset>
     <menupopup id="menu_ToolsPopup">
         <menuitem id="cbToolsMenu" label="CommentBlocker" command="cbOptionsCommand" insertafter="javascriptConsole" class="menuitem-iconic" image="chrome://CommentBlocker/skin/status_enabled_16.png" />
