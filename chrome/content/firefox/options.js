@@ -33,3 +33,8 @@ CommentBlocker.options = {
             }
     }
 };
+
+// Make sure we resize the window properly on load
+window.addEventListener('load',function() {
+    window.sizeToContent();
+},false);
