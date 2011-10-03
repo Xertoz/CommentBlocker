@@ -128,10 +128,8 @@ CommentBlocker.parser.hide = function(document) {
 * Hide an element
 */
 CommentBlocker.parser.hideElement = function(document,i) {
-    if (document.CommentBlocker.comments[i].element.style.display != 'none') {
-        CommentBlocker.parser.updateElement(document,i);
-        document.CommentBlocker.comments[i].element.style.display = 'none';
-    }
+    document.CommentBlocker.comments[i].classList.add('CommentBlocker');
+    document.CommentBlocker.comments[i].classList.add('cbIsActive');
 };
 
 /**
@@ -147,25 +145,18 @@ CommentBlocker.parser.initDocument = function(document,callback) {
     };
     
     // Listen for events when loaded
-    //document.addEventListener('DOMContentLoaded',function() {
-        document.addEventListener('DOMNodeInserted',function(evt) {
-            CommentBlocker.parser.parse(evt.originalTarget,true);
-        },false);
-        
-        document.addEventListener('DOMNodeRemoved',function(evt) {
-            CommentBlocker.parser.remove(evt.originalTarget,true);
-        },false);
-        
-        document.addEventListener('DOMAttrModified',function(evt) {
-            if (!evt.originalTarget.ownerDocument.CommentBlocker.working && evt.originalTarget.ownerDocument.CommentBlocker.enabled)
-                CommentBlocker.parser.jailGuard(evt.originalTarget);
-        },false);
-        
-        document.addEventListener('submit',function(e) {
-            if (e.originalTarget.ownerDocument.CommentBlocker.enabled && CommentBlocker.parser.comments(e.originalTarget))
-                CommentBlocker.parser.stopSubmission(e);
-        },true);
-    //},false);
+    document.addEventListener('DOMNodeInserted',function(evt) {
+        CommentBlocker.parser.parse(evt.originalTarget,true);
+    },false);
+    
+    document.addEventListener('DOMNodeRemoved',function(evt) {
+        CommentBlocker.parser.remove(evt.originalTarget,true);
+    },false);
+    
+    document.addEventListener('submit',function(e) {
+        if (e.originalTarget.ownerDocument.CommentBlocker.enabled && CommentBlocker.parser.comments(e.originalTarget))
+            CommentBlocker.parser.stopSubmission(e);
+    },true);
 };
     
 /**
@@ -177,17 +168,14 @@ CommentBlocker.parser.initElement = function(elem) {
         throw 'Element has owner document without CommentBlocker initialized';
     
     // Can't already be.
-    if (elem.className.indexOf('CommentBlocker') != -1)
+    if (elem.classList.contains('CommentBlocker'))
         return;
     
     // Initialize.
-    elem.ownerDocument.CommentBlocker.comments.push({
-        element: elem,
-        display: elem.style.display
-    });
+    elem.ownerDocument.CommentBlocker.comments.push(elem);
     
     // Add CommentBlocker CSS class
-    elem.className = elem.className.length > 0 ? elem.className+' CommentBlocker' : 'CommentBlocker';
+    elem.classList.add('CommentBlocker');
     
     // Hide it!
     if (elem.ownerDocument.CommentBlocker.enabled)
@@ -201,28 +189,6 @@ CommentBlocker.parser.isInitialized = function(obj) {
     if (typeof(obj.CommentBlocker) == 'undefined')
         return false;
     return true;
-};
-
-/**
-* When DOM attributes change - make sure CommentBlocker rules stick
-*/
-CommentBlocker.parser.jailGuard = function(elem) {
-    if (elem.className.indexOf('CommentBlocker') == -1)
-        return;
-    
-    var n = -1;
-    
-    for (var i=0;i<elem.ownerDocument.CommentBlocker.comments.length;i++)
-        if (elem.ownerDocument.CommentBlocker.comments[i].element == elem)
-            n = i;
-    
-    if (n == -1)
-        return;
-    
-    if (elem.ownerDocument.CommentBlocker.enabled == true)
-        CommentBlocker.parser.hideElement(elem.ownerDocument,n);
-    else
-        CommentBlocker.parser.updateElement(elem.ownerDocument,n);
 };
 
 // Parse an element and its child for comment elements
@@ -271,7 +237,7 @@ CommentBlocker.parser.show = function(document) {
 * Show an element
 */
 CommentBlocker.parser.showElement = function(document,i) {
-    document.CommentBlocker.comments[i].element.style.display = document.CommentBlocker.comments[i].display;
+    document.CommentBlocker.comments[i].classList.remove('cbIsActive');
 };
 
 // Stop submission of a form that's got blocked elements

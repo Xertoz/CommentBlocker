@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CommentBlocker - Visibility</title>
+    </head>
+    <style type="text/css">
+        .CommentBlocker {
+            background:#ccc;
+        }
+    </style>
+    <script type="text/javascript">
+        function visibility() {
+            document.getElementById('answer').innerHTML = document.getElementById('CommentBlocker').style.display == 'none' ? 'hidden' : 'visible';
+        }
+        
+        window.addEventListener('load',function() {
+            var p = document.createElement('p');
+            p.id = 'CommentBlocker';
+            p.className = 'comment';
+            p.innerHTML = 'This is the comment.';
+            document.body.appendChild(p);
+        },false);
+    </script>
+    <body>
+        <p><a href="javascript:visibility();">Check for visibility</a></p>
+        <p>The comment below is <span id="answer">not checked yet</span>.</p>
+    </body>
+</html>

@@ -180,4 +180,9 @@ window.addEventListener('load',function() {
     gBrowser.tabContainer.addEventListener('TabSelect',cbOverlay.listener.onChangeTab,false);
     document.getElementById('cbLocationBar').addEventListener('click',cbOverlay.listener.onClickIcon,false);
     document.getElementById('cbStatusBar').addEventListener('click',cbOverlay.listener.onClickIcon,false);
+    
+    var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"].getService(Components.interfaces.nsIStyleSheetService);
+    var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+    var uri = ios.newURI("chrome://CommentBlocker/content/application.css", null, null);
+    sss.loadAndRegisterSheet(uri, sss.AGENT_SHEET);
 },false);
