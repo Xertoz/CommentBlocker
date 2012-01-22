@@ -33,3 +33,9 @@ addMessageListener('CommentBlocker:TabSelected',function() {
     if (typeof(content.document.CommentBlocker) != 'undefined')
         sendAsyncMessage('CommentBlocker:ToggleComments',content.document.CommentBlocker);
 });
+
+// Load the CommentBlocker CSS rules
+var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"].getService(Components.interfaces.nsIStyleSheetService);
+var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+var uri = ios.newURI("chrome://CommentBlocker/content/application.css", null, null);
+sss.loadAndRegisterSheet(uri, sss.AGENT_SHEET);
