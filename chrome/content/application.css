@@ -1,4 +1,4 @@
-[id*="comment"], [id*="Comment"], [id*="COMMENT"],
-[class*="comment"], [class*="Comment"], [class*="COMMENT"] {
+body [id*="comment"], body [id*="Comment"], body [id*="COMMENT"],
+body [class*="comment"], body [class*="Comment"], body [class*="COMMENT"] {
     display:none !important;
 }
