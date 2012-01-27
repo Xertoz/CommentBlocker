@@ -1,3 +1,4 @@
-.CommentBlocker.cbIsActive {
+[id*="comment"], [id*="Comment"], [id*="COMMENT"],
+[class*="comment"], [class*="Comment"], [class*="COMMENT"] {
     display:none !important;
 }
