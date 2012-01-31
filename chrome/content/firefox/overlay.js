@@ -84,6 +84,9 @@ var cbOverlay = {
                 document.getElementById('cbStatusBarImage').src = 'chrome://CommentBlocker/skin/status_inactive_16.png';
                 document.getElementById('cbStatusBarImage').tooltipText = CommentBlocker.strings.GetStringFromName('inactive');
             }
+            
+            // Enable CSS?
+            cbOverlay.useCSS(enabled);
         }
     },
     
