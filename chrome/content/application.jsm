@@ -107,7 +107,8 @@ var CommentBlocker = {
             
             // Prevent forms from being sent with hidden elements
             document.addEventListener('submit',function(e) {
-                if (e.originalTarget.ownerDocument.CommentBlocker.enabled)
+                if (e.originalTarget.ownerDocument.CommentBlocker.enabled
+                && CommentBlocker.parser.hasComments(e.originalTarget.ownerDocument))
                     CommentBlocker.parser.stopSubmission(e);
             },true);
         },
