@@ -8,7 +8,8 @@ var callback = {
         },
         
         update: function(doc) {
-            sendAsyncMessage('CommentBlocker:ToggleComments',doc.CommentBlocker);
+            if (content.document == doc)
+                sendAsyncMessage('CommentBlocker:ToggleComments',doc.CommentBlocker);
         }
     },
     
@@ -36,6 +37,9 @@ var callback = {
 // Whenever a page is loaded - parse it
 addEventListener('load',function(evt) {
     CommentBlocker.parser.initDocument(evt.target,callback);
+    
+    if (content.document == evt.target)
+        callback.useCSS(evt.target.CommentBlocker.enabled);
     
     evt.target.CommentBlocker.comments = CommentBlocker.parser.hasComments(content.document);
     

@@ -152,6 +152,9 @@ var cbOverlay = {
         */
         onLocationChange: function(aBrowser) {
             CommentBlocker.parser.initDocument(aBrowser.contentDocument,cbOverlay);
+            
+            if (aBrowser.contentDocument == gBrowser.contentDocument)
+                cbOverlay.useCSS(gBrowser.contentDocument.CommentBlocker.enabled);
         },
         
         /**

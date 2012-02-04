@@ -102,9 +102,6 @@ var CommentBlocker = {
                 enabled: !CommentBlocker.isTrusted(document.location.hostname)
             };
             
-            // Enable the CSS to block comments?
-            document.CommentBlocker.callback.useCSS(document.CommentBlocker.enabled);
-            
             // Prevent forms from being sent with hidden elements
             document.addEventListener('submit',function(e) {
                 if (e.originalTarget.ownerDocument.CommentBlocker.enabled
