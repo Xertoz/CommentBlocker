@@ -10,13 +10,6 @@ var cbOverlay = {
     */
     gui: {
         /**
-        * Show the preference window
-        */
-        showPreferences: function() {
-            window.openDialog('chrome://CommentBlocker/content/options.xul','Preferences','chrome,titlebar,toolbar,centerscreen,modal');
-        },
-        
-        /**
         * Show the status bar icon?
         */
         showStatusBar: function(show) {
@@ -91,7 +84,7 @@ var cbOverlay = {
                 break;
                 
                 case 3:
-                    cbOverlay.gui.showPreferences();
+                    window.openDialog('chrome://CommentBlocker/content/options.xul','Preferences','chrome,titlebar,toolbar,centerscreen,modal');
                 break;
             }
             
