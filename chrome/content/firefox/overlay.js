@@ -10,16 +10,6 @@ var cbOverlay = {
     */
     gui: {
         /**
-        * Show the location bar
-        */
-        showLocationBar: function(show) {
-            if (CommentBlocker.settings.getBoolPref('interface_display_locationbar'))
-                document.getElementById('cbLocationBar').hidden = !show;
-            else
-                document.getElementById('cbLocationBar').hidden = true;
-        },
-        
-        /**
         * Show the preference window
         */
         showPreferences: function() {
@@ -56,37 +46,6 @@ var cbOverlay = {
                         }
                     }]
                 );
-        },
-        
-        /**
-        * Update the UI interface
-        */
-        update: function(doc) {
-            if (doc != gBrowser.contentDocument)
-                return;
-            
-            // Find out wether this site is trusted / enabled
-            var trusted = CommentBlocker.isTrusted(gBrowser.contentDocument);
-            var enabled = gBrowser.contentDocument.CommentBlocker.enabled;
-            var comments = CommentBlocker.parser.hasComments(gBrowser.contentDocument);
-            
-            // If there are no comments on this page, do not show the icon
-            cbOverlay.gui.showLocationBar(comments);
-            
-            // Update icon image & text
-            if (comments) {
-                document.getElementById('cbLocationBar').src = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
-                document.getElementById('cbStatusBarImage').src = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
-                document.getElementById('cbLocationBar').tooltipText = (enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled'));
-                document.getElementById('cbStatusBarImage').tooltipText = (enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled'));
-            }
-            else {
-                document.getElementById('cbStatusBarImage').src = 'chrome://CommentBlocker/skin/status_inactive_16.png';
-                document.getElementById('cbStatusBarImage').tooltipText = CommentBlocker.strings.GetStringFromName('inactive');
-            }
-            
-            // Enable CSS?
-            cbOverlay.useCSS(enabled);
         }
     },
     
@@ -94,13 +53,6 @@ var cbOverlay = {
     * Listening API for Firefox
     */
     listener: {
-        /**
-        * Whenever the user switches to a new tab in the browser, update the status bar icon
-        */
-        onChangeTab: function(e) {
-            cbOverlay.gui.update(gBrowser.contentDocument);
-        },
-        
         /**
         * Determine what to do & do it when the user clicks the status bar icon
         */
@@ -148,21 +100,54 @@ var cbOverlay = {
         },
         
         /**
-        * Whenever a new location is fetched, initialize CommentBlocker into the document's DOM
+        * Handle repaints in our own little way
         */
-        onLocationChange: function(aBrowser) {
-            CommentBlocker.parser.initDocument(aBrowser.contentDocument,cbOverlay);
+        onRepaint: function(evt) {
+            // Make sure we are the only worker
+            if (cbOverlay.listener.onRepaintWorking)
+                return;
+            cbOverlay.listener.onRepaintWorking = true;
             
-            if (aBrowser.contentDocument == gBrowser.contentDocument)
-                cbOverlay.useCSS(gBrowser.contentDocument.CommentBlocker.enabled);
+            // Initialize the document if required
+            if (!gBrowser.contentDocument.CommentBlocker)
+                CommentBlocker.parser.initDocument(gBrowser.contentDocument,cbOverlay);
+            
+            // Find out wether this site is trusted / enabled
+            var enabled = gBrowser.contentDocument.CommentBlocker.enabled;
+            var comments = CommentBlocker.parser.hasComments(gBrowser.contentDocument);
+            
+            // If there are no comments on this page, do not show the icon
+            if (CommentBlocker.settings.getBoolPref('interface_display_locationbar'))
+                document.getElementById('cbLocationBar').hidden = !comments;
+            else
+                document.getElementById('cbLocationBar').hidden = true;
+            
+            // Update icon image & text
+            if (comments) {
+                var icon = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
+                document.getElementById('cbLocationBar').src = icon;
+                document.getElementById('cbStatusBarImage').src = icon;
+                
+                var tooltip = enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled');
+                document.getElementById('cbLocationBar').tooltipText = tooltip;
+                document.getElementById('cbStatusBarImage').tooltipText = tooltip;
+            }
+            else {
+                document.getElementById('cbStatusBarImage').src = 'chrome://CommentBlocker/skin/status_inactive_16.png';
+                document.getElementById('cbStatusBarImage').tooltipText = CommentBlocker.strings.GetStringFromName('inactive');
+            }
+            
+            // Enable CSS?
+            cbOverlay.useCSS(enabled);
+            
+            // Release the lock
+            cbOverlay.listener.onRepaintWorking = false;
         },
         
         /**
-        * The main listener to interfere with static page loading before painted onto the screen
+        * Flag to prevent infinite loops
         */
-        onStatusChange: function(aBrowser){
-            cbOverlay.gui.update(aBrowser.contentDocument);
-        }
+        onRepaintWorking: false
     },
     
     /**
@@ -192,8 +177,6 @@ window.addEventListener('load',function() {
     cbOverlay.gui.showStatusBar(CommentBlocker.settings.getBoolPref('interface_display_statusbar'));
     
     // Hook all our events to Firefox
-    gBrowser.addTabsProgressListener(cbOverlay.listener);
-    gBrowser.tabContainer.addEventListener('TabSelect',cbOverlay.listener.onChangeTab,false);
     document.getElementById('cbLocationBar').addEventListener('click',cbOverlay.listener.onClickIcon,false);
     document.getElementById('cbStatusBar').addEventListener('click',cbOverlay.listener.onClickIcon,false);
     
@@ -202,3 +185,7 @@ window.addEventListener('load',function() {
     var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
     cbOverlay.uri = ios.newURI("chrome://CommentBlocker/content/application.css", null, null);
 },false);
+
+// Update the GUI if necessary whenever a repaint is detected
+window.addEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,false);
+window.addEventListener('click',cbOverlay.listener.onRepaint,false);

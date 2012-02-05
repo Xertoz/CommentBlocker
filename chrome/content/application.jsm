@@ -89,7 +89,6 @@ var CommentBlocker = {
         hide: function(document) {
             document.CommentBlocker.enabled = true;
             document.CommentBlocker.callback.useCSS(true);
-            document.CommentBlocker.callback.gui.update(document);
         },
 
         /**
@@ -116,7 +115,6 @@ var CommentBlocker = {
         show: function(document) {
             document.CommentBlocker.enabled = false;
             document.CommentBlocker.callback.useCSS(false);
-            document.CommentBlocker.callback.gui.update(document);
         },
 
         /**
