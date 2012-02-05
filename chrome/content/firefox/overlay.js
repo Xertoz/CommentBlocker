@@ -10,13 +10,6 @@ var cbOverlay = {
     */
     gui: {
         /**
-        * Show the status bar icon?
-        */
-        showStatusBar: function(show) {
-            document.getElementById('cbStatusBar').hidden = !show;
-        },
-        
-        /**
         * Show a notification that we have stopped a submission
         */
         stopSubmission: function(doc) {
@@ -167,7 +160,7 @@ var cbOverlay = {
 // When finished loading...
 window.addEventListener('load',function() {
     // Do we show the status bar icon?
-    cbOverlay.gui.showStatusBar(CommentBlocker.settings.getBoolPref('interface_display_statusbar'));
+    document.getElementById('cbStatusBar').hidden = !CommentBlocker.settings.getBoolPref('interface_display_statusbar');
     
     // Hook all our events to Firefox
     document.getElementById('cbLocationBar').addEventListener('click',cbOverlay.listener.onClickIcon,false);
