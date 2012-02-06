@@ -1,6 +1,3 @@
-// Load CommentBlocker!
-Components.utils.import('chrome://CommentBlocker/content/application.jsm');
-
 /**
 * CommentBlocker's Firefox overlay object for this window
 */
@@ -43,8 +40,7 @@ var cbOverlay = {
         * Determine what to do & do it when the user clicks the status bar icon
         */
         onClickIcon: function(event) {
-            if (typeof(gBrowser.contentDocument.CommentBlocker) == 'undefined')
-                return;
+            var gBrowser = event.target.ownerDocument.defaultView.gBrowser;
             
             switch (event.button) {
                 case 0: // Left click
@@ -94,6 +90,17 @@ var cbOverlay = {
                 return;
             cbOverlay.listener.onRepaintWorking = true;
             
+            // We need these variables while working
+            var document = evt.target.document;
+            var gBrowser = evt.target.gBrowser;
+            
+            var cbLocationBar = document.getElementById('cbLocationBar');
+            var cbStatusBarImage = document.getElementById('cbStatusBarImage');
+            
+            // No gBrowser? Invalid window.
+            if (!gBrowser)
+                return;
+            
             // Initialize the document if required
             if (!gBrowser.contentDocument.CommentBlocker)
                 CommentBlocker.parser.initDocument(gBrowser.contentDocument,cbOverlay);
@@ -103,24 +110,35 @@ var cbOverlay = {
             var comments = CommentBlocker.parser.hasComments(gBrowser.contentDocument);
             
             // If there are no comments on this page, do not show the icon
-            if (CommentBlocker.settings.getBoolPref('interface_display_locationbar'))
-                document.getElementById('cbLocationBar').hidden = !comments;
-            else
-                document.getElementById('cbLocationBar').hidden = true;
+            if (cbLocationBar) {
+                if (CommentBlocker.settings.getBoolPref('interface_display_locationbar'))
+                    cbLocationBar.hidden = !comments;
+                else
+                    cbLocationBar.hidden = true;
+            }
+            
+            // Show the addon bar?
+            if (cbStatusBarImage && CommentBlocker.settings.getBoolPref('interface_display_statusbar'))
+                cbStatusBarImage.hidden = false;
             
             // Update icon image & text
             if (comments) {
                 var icon = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
-                document.getElementById('cbLocationBar').src = icon;
-                document.getElementById('cbStatusBarImage').src = icon;
-                
                 var tooltip = enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled');
-                document.getElementById('cbLocationBar').tooltipText = tooltip;
-                document.getElementById('cbStatusBarImage').tooltipText = tooltip;
+                
+                if (cbLocationBar) {
+                    cbLocationBar.src = icon;
+                    cbLocationBar.tooltipText = tooltip;
+                }
+                
+                if (cbStatusBarImage) {
+                    cbStatusBarImage.src = icon;
+                    cbStatusBarImage.tooltipText = tooltip;
+                }
             }
-            else {
-                document.getElementById('cbStatusBarImage').src = 'chrome://CommentBlocker/skin/status_inactive_16.png';
-                document.getElementById('cbStatusBarImage').tooltipText = CommentBlocker.strings.GetStringFromName('inactive');
+            else if (cbStatusBarImage) {
+                cbStatusBarImage.src = 'chrome://CommentBlocker/skin/status_inactive_16.png';
+                cbStatusBarImage.tooltipText = CommentBlocker.strings.GetStringFromName('inactive');
             }
             
             // Enable CSS?
@@ -137,6 +155,57 @@ var cbOverlay = {
     },
     
     /**
+    * Load the addon
+    */
+    load: function(window) {
+        // When finished loading...
+        window.addEventListener('load',function() {
+            var document = window.document;
+            
+            // Create the status bar button
+            var statusBar = document.getElementById('status-bar');
+            if (statusBar) {
+                var statusBarPanel = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','statusbarpanel');
+                statusBarPanel.setAttribute('id','cbStatusBar');
+                statusBarPanel.setAttribute('role','button');
+                statusBarPanel.setAttribute('hidden','false');
+                
+                var statusBarImage = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','image');
+                statusBarImage.setAttribute('id','cbStatusBarImage');
+                statusBarImage.setAttribute('src','chrome://CommentBlocker/skin/status_inactive_16.png');
+                statusBarImage.setAttribute('mousethrough','never');
+                statusBarImage.setAttribute('width','16');
+                statusBarImage.setAttribute('height','16');
+                statusBarPanel.appendChild(statusBarImage);
+                
+                statusBar.appendChild(statusBarPanel);
+            }
+            
+            // Create the URL bar button
+            var urlBar = document.getElementById('urlbar-icons');
+            if (urlBar) {
+                var urlBarImage = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','image');
+                statusBarImage.setAttribute('id','cbLocationBar');
+                statusBarImage.setAttribute('src','chrome://CommentBlocker/skin/status_inactive_16.png');
+                statusBarImage.setAttribute('mousethrough','never');
+                statusBarImage.setAttribute('width','16');
+                statusBarImage.setAttribute('height','16');
+                urlBar.appendChild(statusBarImage);
+            }
+            
+            // Hook all our events to Firefox
+            if (statusBarImage)
+                statusBarImage.addEventListener('click',cbOverlay.listener.onClickIcon,false);
+            if (statusBarPanel)
+                statusBarPanel.addEventListener('click',cbOverlay.listener.onClickIcon,false);
+        },false);
+
+        // Update the GUI if necessary whenever a repaint is detected
+        window.addEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,false);
+        window.addEventListener('click',cbOverlay.listener.onRepaint,false);
+    },
+    
+    /**
     * The stylesheet service
     */
     sss: null,
@@ -145,6 +214,26 @@ var cbOverlay = {
     * The URI to the stylesheet
     */
     uri: null,
+    
+    /**
+    * Unload the addon
+    */
+    unload: function(window) {
+        var document = window.document;
+        
+        cbOverlay.useCSS(false);
+        
+        var cbStatusBar = document.getElementById('cbStatusBar');
+        if (cbStatusBar)
+            cbStatusBar.parentNode.removeChild(cbStatusBar);
+        
+        var cbLocationBar = document.getElementById('cbLocationBar');
+        if (cbLocationBar)
+            cbLocationBar.parentNode.removeChild(cbLocationBar);
+        
+        window.removeEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,false);
+        window.removeEventListener('click',cbOverlay.listener.onRepaint,false);
+    },
     
     /**
     * Use the stylesheet?
@@ -157,21 +246,9 @@ var cbOverlay = {
     }
 };
 
-// When finished loading...
-window.addEventListener('load',function() {
-    // Do we show the status bar icon?
-    document.getElementById('cbStatusBar').hidden = !CommentBlocker.settings.getBoolPref('interface_display_statusbar');
-    
-    // Hook all our events to Firefox
-    document.getElementById('cbLocationBar').addEventListener('click',cbOverlay.listener.onClickIcon,false);
-    document.getElementById('cbStatusBar').addEventListener('click',cbOverlay.listener.onClickIcon,false);
-    
-    // Initiate the stylesheet service etc
+// Initiate the stylesheet service etc
+(function() {
     cbOverlay.sss = Components.classes["@mozilla.org/content/style-sheet-service;1"].getService(Components.interfaces.nsIStyleSheetService);
     var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
     cbOverlay.uri = ios.newURI("chrome://CommentBlocker/content/application.css", null, null);
-},false);
-
-// Update the GUI if necessary whenever a repaint is detected
-window.addEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,false);
-window.addEventListener('click',cbOverlay.listener.onRepaint,false);
+})();
