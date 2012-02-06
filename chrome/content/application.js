@@ -77,7 +77,7 @@ var CommentBlocker = {
         */
         hasComments: function(elem) {
             return elem.querySelector(
-                '*, [id*="comment"], [id*="Comment"], [id*="COMMENT"], [class*="comment"], [class*="Comment"], [class*="COMMENT"]'
+                '[id*="comment"], [id*="Comment"], [id*="COMMENT"], [class*="comment"], [class*="Comment"], [class*="COMMENT"]'
             ) != null;
         },
 

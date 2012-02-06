@@ -40,7 +40,7 @@ var cbOverlay = {
         * Determine what to do & do it when the user clicks the status bar icon
         */
         onClickIcon: function(event) {
-            var gBrowser = event.target.ownerDocument.defaultView.gBrowser;
+            var contentDocument = event.target.ownerDocument.defaultView.content.document;
             
             switch (event.button) {
                 case 0: // Left click
@@ -61,15 +61,15 @@ var cbOverlay = {
             
             switch (todo) {
                 case 1:
-                    CommentBlocker.toggleComments(gBrowser.contentDocument);
+                    CommentBlocker.toggleComments(contentDocument);
                 break;
                 
                 case 2:
-                    CommentBlocker.toggleListed(gBrowser.contentDocument.location.hostname);
-                    if (CommentBlocker.isTrusted(gBrowser.contentDocument.location.hostname))
-                        CommentBlocker.parser.show(gBrowser.contentDocument);
+                    CommentBlocker.toggleListed(contentDocument.location.hostname);
+                    if (CommentBlocker.isTrusted(contentDocument.location.hostname))
+                        CommentBlocker.parser.show(contentDocument);
                     else
-                        CommentBlocker.parser.hide(gBrowser.contentDocument);
+                        CommentBlocker.parser.hide(contentDocument);
                 break;
                 
                 case 3:
@@ -92,22 +92,18 @@ var cbOverlay = {
             
             // We need these variables while working
             var document = evt.target.document;
-            var gBrowser = evt.target.gBrowser;
+            var contentDocument = evt.target.content.document;
             
             var cbLocationBar = document.getElementById('cbLocationBar');
             var cbStatusBarImage = document.getElementById('cbStatusBarImage');
             
-            // No gBrowser? Invalid window.
-            if (!gBrowser)
-                return;
-            
             // Initialize the document if required
-            if (!gBrowser.contentDocument.CommentBlocker)
-                CommentBlocker.parser.initDocument(gBrowser.contentDocument,cbOverlay);
+            if (!contentDocument.CommentBlocker)
+                CommentBlocker.parser.initDocument(contentDocument,cbOverlay);
             
             // Find out wether this site is trusted / enabled
-            var enabled = gBrowser.contentDocument.CommentBlocker.enabled;
-            var comments = CommentBlocker.parser.hasComments(gBrowser.contentDocument);
+            var enabled = contentDocument.CommentBlocker.enabled;
+            var comments = CommentBlocker.parser.hasComments(contentDocument);
             
             // If there are no comments on this page, do not show the icon
             if (cbLocationBar) {
@@ -158,51 +154,47 @@ var cbOverlay = {
     * Load the addon
     */
     load: function(window) {
-        // When finished loading...
-        window.addEventListener('load',function() {
-            var document = window.document;
+        var document = window.document;
+        
+        // Create the status bar button
+        var statusBar = document.getElementById('status-bar');
+        if (statusBar) {
+            var statusBarPanel = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','statusbarpanel');
+            statusBarPanel.setAttribute('id','cbStatusBar');
+            statusBarPanel.setAttribute('role','button');
+            statusBarPanel.setAttribute('hidden','false');
             
-            // Create the status bar button
-            var statusBar = document.getElementById('status-bar');
-            if (statusBar) {
-                var statusBarPanel = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','statusbarpanel');
-                statusBarPanel.setAttribute('id','cbStatusBar');
-                statusBarPanel.setAttribute('role','button');
-                statusBarPanel.setAttribute('hidden','false');
-                
-                var statusBarImage = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','image');
-                statusBarImage.setAttribute('id','cbStatusBarImage');
-                statusBarImage.setAttribute('src','chrome://CommentBlocker/skin/status_inactive_16.png');
-                statusBarImage.setAttribute('mousethrough','never');
-                statusBarImage.setAttribute('width','16');
-                statusBarImage.setAttribute('height','16');
-                statusBarPanel.appendChild(statusBarImage);
-                
-                statusBar.appendChild(statusBarPanel);
-            }
+            var statusBarImage = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','image');
+            statusBarImage.setAttribute('id','cbStatusBarImage');
+            statusBarImage.setAttribute('src','chrome://CommentBlocker/skin/status_inactive_16.png');
+            statusBarImage.setAttribute('mousethrough','never');
+            statusBarImage.setAttribute('width','16');
+            statusBarImage.setAttribute('height','16');
+            statusBarPanel.appendChild(statusBarImage);
             
-            // Create the URL bar button
-            var urlBar = document.getElementById('urlbar-icons');
-            if (urlBar) {
-                var urlBarImage = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','image');
-                statusBarImage.setAttribute('id','cbLocationBar');
-                statusBarImage.setAttribute('src','chrome://CommentBlocker/skin/status_inactive_16.png');
-                statusBarImage.setAttribute('mousethrough','never');
-                statusBarImage.setAttribute('width','16');
-                statusBarImage.setAttribute('height','16');
-                urlBar.appendChild(statusBarImage);
-            }
-            
-            // Hook all our events to Firefox
-            if (statusBarImage)
-                statusBarImage.addEventListener('click',cbOverlay.listener.onClickIcon,false);
-            if (statusBarPanel)
-                statusBarPanel.addEventListener('click',cbOverlay.listener.onClickIcon,false);
-        },false);
+            statusBar.appendChild(statusBarPanel);
+        }
+        
+        // Create the URL bar button
+        var urlBar = document.getElementById('urlbar-icons');
+        if (urlBar) {
+            var urlBarImage = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','image');
+            statusBarImage.setAttribute('id','cbLocationBar');
+            statusBarImage.setAttribute('src','chrome://CommentBlocker/skin/status_inactive_16.png');
+            statusBarImage.setAttribute('mousethrough','never');
+            statusBarImage.setAttribute('width','16');
+            statusBarImage.setAttribute('height','16');
+            urlBar.appendChild(statusBarImage);
+        }
+        
+        // Hook all our events to Firefox
+        if (statusBarImage)
+            statusBarImage.addEventListener('click',cbOverlay.listener.onClickIcon,false);
+        if (statusBarPanel)
+            statusBarPanel.addEventListener('click',cbOverlay.listener.onClickIcon,false);
 
         // Update the GUI if necessary whenever a repaint is detected
-        window.addEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,false);
-        window.addEventListener('click',cbOverlay.listener.onRepaint,false);
+        window.addEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,true);
     },
     
     /**
@@ -231,8 +223,7 @@ var cbOverlay = {
         if (cbLocationBar)
             cbLocationBar.parentNode.removeChild(cbLocationBar);
         
-        window.removeEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,false);
-        window.removeEventListener('click',cbOverlay.listener.onRepaint,false);
+        window.removeEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,true);
     },
     
     /**

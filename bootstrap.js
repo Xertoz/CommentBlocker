@@ -1,8 +1,17 @@
 Components.utils.import('resource://gre/modules/Services.jsm');
 
 var listener = {
-    onOpenWindow: function(window) {
-        cbOverlay.load(window.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIDOMWindow).window);
+    onOpenWindow: function(xulWindow) {
+        let domWindow = xulWindow
+            .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+            .getInterface(Components.interfaces.nsIDOMWindowInternal);
+        
+        domWindow.addEventListener('load', function listener() {
+            domWindow.removeEventListener('load',listener,false);
+        
+            if (domWindow.document.documentElement.getAttribute('windowtype') == 'navigator:browser')
+                cbOverlay.load(domWindow);
+        },false);
     },
 
     onCloseWindow: function(xulWindow) {},
