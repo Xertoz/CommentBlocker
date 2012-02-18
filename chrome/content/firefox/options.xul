@@ -6,17 +6,10 @@
     <script src="chrome://CommentBlocker/content/firefox/options.js"/>
     <prefpane id="pane_interface" label="&CommentBlocker.options.pane_interface;" image="chrome://CommentBlocker/skin/status_inactive_32.png">
         <preferences>
-            <preference id="interface_display_locationbar" name="extensions.CommentBlocker.interface_display_locationbar" type="bool" />
-            <preference id="interface_display_statusbar" name="extensions.CommentBlocker.interface_display_statusbar" type="bool" />
             <preference id="interface_behaviour_leftclick" name="extensions.CommentBlocker.interface_behaviour_leftclick" type="int" />
             <preference id="interface_behaviour_scrollclick" name="extensions.CommentBlocker.interface_behaviour_scrollclick" type="int" />
             <preference id="interface_behaviour_rightclick" name="extensions.CommentBlocker.interface_behaviour_rightclick" type="int" />
         </preferences>
-        <groupbox>
-            <caption label="&CommentBlocker.options.interface_placement;" />
-            <checkbox label="&CommentBlocker.options.interface_display_locationbar;" preference="interface_display_locationbar" />
-            <checkbox label="&CommentBlocker.options.interface_display_statusbar;" preference="interface_display_statusbar" />
-        </groupbox>
         <groupbox>
             <caption label="&CommentBlocker.options.interface_behaviour;" />
             <hbox>

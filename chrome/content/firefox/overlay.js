@@ -93,9 +93,7 @@ var cbOverlay = {
             // We need these variables while working
             var document = evt.target.document;
             var contentDocument = evt.target.content.document;
-            
             var cbLocationBar = document.getElementById('cbLocationBar');
-            var cbStatusBarImage = document.getElementById('cbStatusBarImage');
             
             // Initialize the document if required
             if (!contentDocument.CommentBlocker)
@@ -113,10 +111,6 @@ var cbOverlay = {
                     cbLocationBar.hidden = true;
             }
             
-            // Show the addon bar?
-            if (cbStatusBarImage && CommentBlocker.settings.getBoolPref('interface_display_statusbar'))
-                cbStatusBarImage.hidden = false;
-            
             // Update icon image & text
             if (comments) {
                 var icon = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
@@ -126,15 +120,6 @@ var cbOverlay = {
                     cbLocationBar.src = icon;
                     cbLocationBar.tooltipText = tooltip;
                 }
-                
-                if (cbStatusBarImage) {
-                    cbStatusBarImage.src = icon;
-                    cbStatusBarImage.tooltipText = tooltip;
-                }
-            }
-            else if (cbStatusBarImage) {
-                cbStatusBarImage.src = 'chrome://CommentBlocker/skin/status_inactive_16.png';
-                cbStatusBarImage.tooltipText = CommentBlocker.strings.GetStringFromName('inactive');
             }
             
             // Enable CSS?
@@ -156,42 +141,21 @@ var cbOverlay = {
     load: function(window) {
         var document = window.document;
         
-        // Create the status bar button
-        var statusBar = document.getElementById('status-bar');
-        if (statusBar) {
-            var statusBarPanel = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','statusbarpanel');
-            statusBarPanel.setAttribute('id','cbStatusBar');
-            statusBarPanel.setAttribute('role','button');
-            statusBarPanel.setAttribute('hidden','false');
-            
-            var statusBarImage = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','image');
-            statusBarImage.setAttribute('id','cbStatusBarImage');
-            statusBarImage.setAttribute('src','chrome://CommentBlocker/skin/status_inactive_16.png');
-            statusBarImage.setAttribute('mousethrough','never');
-            statusBarImage.setAttribute('width','16');
-            statusBarImage.setAttribute('height','16');
-            statusBarPanel.appendChild(statusBarImage);
-            
-            statusBar.appendChild(statusBarPanel);
-        }
-        
         // Create the URL bar button
         var urlBar = document.getElementById('urlbar-icons');
         if (urlBar) {
             var urlBarImage = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','image');
-            statusBarImage.setAttribute('id','cbLocationBar');
-            statusBarImage.setAttribute('src','chrome://CommentBlocker/skin/status_inactive_16.png');
-            statusBarImage.setAttribute('mousethrough','never');
-            statusBarImage.setAttribute('width','16');
-            statusBarImage.setAttribute('height','16');
-            urlBar.appendChild(statusBarImage);
+            urlBarImage.setAttribute('id','cbLocationBar');
+            urlBarImage.setAttribute('src','chrome://CommentBlocker/skin/status_inactive_16.png');
+            urlBarImage.setAttribute('mousethrough','never');
+            urlBarImage.setAttribute('width','16');
+            urlBarImage.setAttribute('height','16');
+            urlBar.appendChild(urlBarImage);
         }
         
         // Hook all our events to Firefox
-        if (statusBarImage)
-            statusBarImage.addEventListener('click',cbOverlay.listener.onClickIcon,false);
-        if (statusBarPanel)
-            statusBarPanel.addEventListener('click',cbOverlay.listener.onClickIcon,false);
+        if (urlBarImage)
+            urlBarImage.addEventListener('click',cbOverlay.listener.onClickIcon,false);
 
         // Update the GUI if necessary whenever a repaint is detected
         window.addEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,true);
