@@ -1,6 +1,3 @@
-// Load CommentBlocker!
-Components.utils.import('chrome://CommentBlocker/content/application.jsm');
-
 /**
 * Manage options for the addon
 * 
