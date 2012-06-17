@@ -35,7 +35,7 @@ function startup(data, reason) {
     
     var windows = Services.wm.getEnumerator('navigator:browser');
     while (windows.hasMoreElements())
-        cbOverlay.load(windows.getNext().QueryInterface(Components.interfaces.nsIDOMWindow));
+        cbOverlay.load(windows.getNext());
 
     Services.wm.addListener(listener);
 }
@@ -45,5 +45,5 @@ function shutdown(data, reason) {
     
     var windows = Services.wm.getEnumerator('navigator:browser');
     while (windows.hasMoreElements())
-        cbOverlay.unload(windows.getNext().QueryInterface(Components.interfaces.nsIDOMWindow));
+        cbOverlay.unload(windows.getNext());
 }
