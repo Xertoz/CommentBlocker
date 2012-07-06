@@ -86,7 +86,7 @@ var CommentBlocker = {
         */
         hide: function(document) {
             document.CommentBlocker.enabled = true;
-            document.CommentBlocker.callback.useCSS(true);
+            document.body.classList.add('CommentBlocker');
         },
 
         /**
@@ -98,6 +98,9 @@ var CommentBlocker = {
                 callback: callback,
                 enabled: !CommentBlocker.isTrusted(document.location.hostname)
             };
+            
+            if (document.CommentBlocker.enabled)
+            	CommentBlocker.parser.hide(document);
             
             // Prevent forms from being sent with hidden elements
             document.addEventListener('submit',function(e) {
@@ -112,7 +115,7 @@ var CommentBlocker = {
         */
         show: function(document) {
             document.CommentBlocker.enabled = false;
-            document.CommentBlocker.callback.useCSS(false);
+            document.body.classList.remove('CommentBlocker');
         },
 
         /**

@@ -1,4 +1,4 @@
-body [id*="comment"], body [id*="Comment"], body [id*="COMMENT"],
-body [class*="comment"], body [class*="Comment"], body [class*="COMMENT"] {
+body.CommentBlocker [id*="comment"], body.CommentBlocker [id*="Comment"], body.CommentBlocker [id*="COMMENT"],
+body.CommentBlocker [class*="comment"], body.CommentBlocker [class*="Comment"], body.CommentBlocker [class*="COMMENT"] {
     display:none !important;
 }

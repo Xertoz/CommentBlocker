@@ -82,6 +82,14 @@ var cbOverlay = {
         },
         
         /**
+         * Handle document loads
+         */
+        onProgressChange: function(aBrowser, aWebProgress, aRequest) {
+        	if (!aBrowser.contentDocument.CommentBlocker && aBrowser.contentDocument.body)
+        		CommentBlocker.parser.initDocument(aBrowser.contentDocument, cbOverlay);
+        },
+        
+        /**
         * Handle repaints in our own little way
         */
         onRepaint: function(evt) {
@@ -95,35 +103,32 @@ var cbOverlay = {
             var contentDocument = evt.target.content.document;
             var cbLocationBar = document.getElementById('cbLocationBar');
             
-            // Initialize the document if required
-            if (!contentDocument.CommentBlocker)
-                CommentBlocker.parser.initDocument(contentDocument,cbOverlay);
-            
             // Find out wether this site is trusted / enabled
-            var enabled = contentDocument.CommentBlocker.enabled;
-            var comments = CommentBlocker.parser.hasComments(contentDocument);
-            
-            // If there are no comments on this page, do not show the icon
-            if (cbLocationBar) {
-                if (CommentBlocker.settings.getBoolPref('interface_display_locationbar'))
-                    cbLocationBar.hidden = !comments;
-                else
-                    cbLocationBar.hidden = true;
+            if (contentDocument.CommentBlocker) {
+	            var enabled = contentDocument.CommentBlocker.enabled;
+	            var comments = CommentBlocker.parser.hasComments(contentDocument.body);
+	            
+	            // If there are no comments on this page, do not show the icon
+	            if (cbLocationBar) {
+	                if (CommentBlocker.settings.getBoolPref('interface_display_locationbar'))
+	                    cbLocationBar.hidden = !comments;
+	                else
+	                    cbLocationBar.hidden = true;
+	            }
+	            
+	            // Update icon image & text
+	            if (comments) {
+	                var icon = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
+	                var tooltip = enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled');
+	                
+	                if (cbLocationBar) {
+	                    cbLocationBar.src = icon;
+	                    cbLocationBar.tooltipText = tooltip;
+	                }
+	            }
             }
-            
-            // Update icon image & text
-            if (comments) {
-                var icon = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
-                var tooltip = enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled');
-                
-                if (cbLocationBar) {
-                    cbLocationBar.src = icon;
-                    cbLocationBar.tooltipText = tooltip;
-                }
-            }
-            
-            // Enable CSS?
-            cbOverlay.useCSS(enabled);
+            else if (cbLocationBar)
+            	cbLocationBar.hidden = true;
             
             // Release the lock
             cbOverlay.listener.onRepaintWorking = false;
@@ -145,6 +150,7 @@ var cbOverlay = {
         var urlBar = document.getElementById('urlbar-icons');
         if (urlBar) {
             var urlBarImage = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul','image');
+            urlBarImage.addEventListener('click',cbOverlay.listener.onClickIcon,false);
             urlBarImage.setAttribute('id','cbLocationBar');
             urlBarImage.setAttribute('src','chrome://CommentBlocker/skin/status_inactive_16.png');
             urlBarImage.setAttribute('mousethrough','never');
@@ -153,23 +159,21 @@ var cbOverlay = {
             urlBar.appendChild(urlBarImage);
         }
         
-        // Hook all our events to Firefox
-        if (urlBarImage)
-            urlBarImage.addEventListener('click',cbOverlay.listener.onClickIcon,false);
-
-        // Update the GUI if necessary whenever a repaint is detected
+        cbOverlay.useCSS(true);
+        
         window.addEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,true);
+        window.gBrowser.addTabsProgressListener(cbOverlay.listener);
     },
     
     /**
     * The stylesheet service
     */
-    sss: null,
+    sss: Components.classes["@mozilla.org/content/style-sheet-service;1"].getService(Components.interfaces.nsIStyleSheetService),
     
     /**
     * The URI to the stylesheet
     */
-    uri: null,
+    uri: Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI("chrome://CommentBlocker/content/application.css", null, null),
     
     /**
     * Unload the addon
@@ -188,6 +192,7 @@ var cbOverlay = {
             cbLocationBar.parentNode.removeChild(cbLocationBar);
         
         window.removeEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,true);
+        window.gBrowser.removeTabsProgressListener(cbOverlay.listener);
     },
     
     /**
@@ -200,10 +205,3 @@ var cbOverlay = {
             cbOverlay.sss.unregisterSheet(cbOverlay.uri, cbOverlay.sss.AGENT_SHEET);
     }
 };
-
-// Initiate the stylesheet service etc
-(function() {
-    cbOverlay.sss = Components.classes["@mozilla.org/content/style-sheet-service;1"].getService(Components.interfaces.nsIStyleSheetService);
-    var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-    cbOverlay.uri = ios.newURI("chrome://CommentBlocker/content/application.css", null, null);
-})();
