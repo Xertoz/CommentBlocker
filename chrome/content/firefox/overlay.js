@@ -10,7 +10,9 @@ var cbOverlay = {
         * Show a notification that we have stopped a submission
         */
         stopSubmission: function(doc) {
-            var nb = gBrowser.getNotificationBox();
+            var nb = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+            	.getService(Components.interfaces.nsIWindowMediator)
+            	.getMostRecentWindow('navigator:browser').gBrowser.getNotificationBox();
             var n = nb.getNotificationWithValue('commentblocker-dangerous-form');
             if (n)
                 n.label = CommentBlocker.strings.GetStringFromName('submissionDenied');
