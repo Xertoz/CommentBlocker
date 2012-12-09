@@ -12,6 +12,7 @@
     <em:contributor>http://www.wefunction.com/function-free-icon-set</em:contributor>
     <em:description>Hide comments per default on websites and use a button to show them.</em:description>
     <em:optionsURL>chrome://CommentBlocker/content/options.xul</em:optionsURL>
+    <em:optionsType>2</em:optionsType>
     <em:translator>mozillazg</em:translator>
     <em:translator>Volodymyr Savchuk</em:translator>
     <em:translator>nikneyim</em:translator>
@@ -28,8 +29,8 @@
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
-        <em:minVersion>4.0</em:minVersion>
-        <em:maxVersion>12.0a1</em:maxVersion>
+        <em:minVersion>7.0</em:minVersion>
+        <em:maxVersion>20.0a1</em:maxVersion>
       </Description>
     </em:targetApplication>
     <em:targetApplication>

@@ -1,77 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<!DOCTYPE overlay SYSTEM "chrome://CommentBlocker/locale/options.dtd">
-<prefwindow title="&CommentBlocker.options;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" buttons="accept">
-    <script src="chrome://CommentBlocker/content/application.js"/>
-    <script src="chrome://CommentBlocker/content/firefox/options.js"/>
-    <prefpane id="pane_interface" label="&CommentBlocker.options.pane_interface;" image="chrome://CommentBlocker/skin/status_inactive_32.png">
-        <preferences>
-            <preference id="interface_behaviour_leftclick" name="extensions.CommentBlocker.interface_behaviour_leftclick" type="int" />
-            <preference id="interface_behaviour_scrollclick" name="extensions.CommentBlocker.interface_behaviour_scrollclick" type="int" />
-            <preference id="interface_behaviour_rightclick" name="extensions.CommentBlocker.interface_behaviour_rightclick" type="int" />
-        </preferences>
-        <groupbox>
-            <caption label="&CommentBlocker.options.interface_behaviour;" />
+<!DOCTYPE mydialog SYSTEM "chrome://CommentBlocker/locale/options.dtd">
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <setting pref="extensions.CommentBlocker.interface_behaviour_leftclick" type="menulist" title="&CommentBlocker.options.interface_behaviour_leftclick;">
+        <menulist>
+            <menupopup>
+                <menuitem value="1" label="&CommentBlocker.options.interface_behaviour_togglecomments;" />
+                <menuitem value="2" label="&CommentBlocker.options.interface_behaviour_toggletrust;" />
+                <menuitem value="3" label="&CommentBlocker.options.interface_behaviour_toggleoptions;" />
+                <menuitem value="0" label="&CommentBlocker.options.interface_behaviour_donothing;" />
+            </menupopup>
+        </menulist>
+    </setting>
+    <setting pref="extensions.CommentBlocker.interface_behaviour_scrollclick" type="menulist" title="&CommentBlocker.options.interface_behaviour_scrollclick;">
+        <menulist>
+            <menupopup>
+                <menuitem value="1" label="&CommentBlocker.options.interface_behaviour_togglecomments;" />
+                <menuitem value="2" label="&CommentBlocker.options.interface_behaviour_toggletrust;" />
+                <menuitem value="3" label="&CommentBlocker.options.interface_behaviour_toggleoptions;" />
+                <menuitem value="0" label="&CommentBlocker.options.interface_behaviour_donothing;" />
+            </menupopup>
+        </menulist>
+    </setting>
+    <setting pref="extensions.CommentBlocker.interface_behaviour_rightclick" type="menulist" title="&CommentBlocker.options.interface_behaviour_rightclick;">
+        <menulist>
+            <menupopup>
+                <menuitem value="1" label="&CommentBlocker.options.interface_behaviour_togglecomments;" />
+                <menuitem value="2" label="&CommentBlocker.options.interface_behaviour_toggletrust;" />
+                <menuitem value="3" label="&CommentBlocker.options.interface_behaviour_toggleoptions;" />
+                <menuitem value="0" label="&CommentBlocker.options.interface_behaviour_donothing;" />
+            </menupopup>
+        </menulist>
+    </setting>
+    <setting pref="extensions.CommentBlocker.rules_unknown_display" type="bool" title="&CommentBlocker.options.rules_listed;">
+        &CommentBlocker.options.rules_trust;
+    </setting>
+    <setting pref="extensions.CommentBlocker.rules_listed_display" type="bool" title="&CommentBlocker.options.rules_unknown;">
+        &CommentBlocker.options.rules_trust;
+    </setting>
+    <setting pref="test" type="control" title="&CommentBlocker.options.pane_websites;">
+        <vbox>
+            <listbox id="cbWebsites">
+                <listhead>
+                    <listheader label="&CommentBlocker.options.website;" />
+                </listhead>
+            </listbox>
             <hbox>
-                <groupbox>
-                    <caption label="&CommentBlocker.options.interface_behaviour_leftclick;" />
-                    <radiogroup preference="interface_behaviour_leftclick">
-                        <radio id="fu1" label="&CommentBlocker.options.interface_behaviour_togglecomments;" value="1" />
-                        <radio id="fu2" label="&CommentBlocker.options.interface_behaviour_toggletrust;" value="2" />
-                        <radio label="&CommentBlocker.options.interface_behaviour_toggleoptions;" value="3" />
-                        <radio label="&CommentBlocker.options.interface_behaviour_donothing;" value="0" />
-                    </radiogroup>
-                </groupbox>
-                <groupbox>
-                    <caption label="&CommentBlocker.options.interface_behaviour_rightclick;" />
-                    <radiogroup preference="interface_behaviour_rightclick">
-                        <radio label="&CommentBlocker.options.interface_behaviour_togglecomments;" value="1" />
-                        <radio label="&CommentBlocker.options.interface_behaviour_toggletrust;" value="2" />
-                        <radio label="&CommentBlocker.options.interface_behaviour_toggleoptions;" value="3" />
-                        <radio label="&CommentBlocker.options.interface_behaviour_donothing;" value="0" />
-                    </radiogroup>
-                </groupbox>
-                <groupbox>
-                    <caption label="&CommentBlocker.options.interface_behaviour_scrollclick;" />
-                    <radiogroup preference="interface_behaviour_scrollclick">
-                        <radio label="&CommentBlocker.options.interface_behaviour_togglecomments;" value="1" />
-                        <radio label="&CommentBlocker.options.interface_behaviour_toggletrust;" value="2" />
-                        <radio label="&CommentBlocker.options.interface_behaviour_toggleoptions;" value="3" />
-                        <radio label="&CommentBlocker.options.interface_behaviour_donothing;" value="0" />
-                    </radiogroup>
-                </groupbox>
+                <button id="cbWebsitesAdd" label="+" />
+                <button id="cbWebsitesRemove" label="-" />
             </hbox>
-        </groupbox>
-    </prefpane>
-    <prefpane id="pane_rules" label="&CommentBlocker.options.pane_rules;" image="chrome://CommentBlocker/skin/rules_32.png">
-        <preferences>
-            <preference id="rules_unknown_display" name="extensions.CommentBlocker.rules_unknown_display" type="bool" />
-            <preference id="rules_listed_display" name="extensions.CommentBlocker.rules_listed_display" type="bool" />
-        </preferences>
-        <groupbox>
-            <caption label="&CommentBlocker.options.rules_listed;" />
-            <radiogroup preference="rules_listed_display">
-                <radio label="&CommentBlocker.options.rules_trust;" value="true" />
-                <radio label="&CommentBlocker.options.rules_block;" value="false" />
-            </radiogroup>
-        </groupbox>
-        <groupbox>
-            <caption label="&CommentBlocker.options.rules_unknown;" />
-            <radiogroup preference="rules_unknown_display">
-                <radio label="&CommentBlocker.options.rules_trust;" value="true" />
-                <radio label="&CommentBlocker.options.rules_block;" value="false" />
-            </radiogroup>
-        </groupbox>
-    </prefpane>
-    <prefpane id="pane_websites" label="&CommentBlocker.options.pane_websites;" onpaneload="CommentBlocker.options.loadWebsites();" image="chrome://CommentBlocker/skin/websites_32.png">
-        <listbox id="cbWebsites">
-            <listhead>
-                <listheader label="&CommentBlocker.options.website;" />
-            </listhead>
-        </listbox>
-        <hbox>
-            <button label="+" onclick="CommentBlocker.options.addWebsite();" />
-            <button label="-" onclick="CommentBlocker.options.deleteWebsite();" />
-        </hbox>
-    </prefpane>
-</prefwindow>
+        </vbox>
+    </setting>
+</vbox>
