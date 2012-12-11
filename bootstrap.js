@@ -2,7 +2,7 @@ Components.utils.import('resource://gre/modules/Services.jsm');
 
 var listener = {
     onOpenWindow: function(xulWindow) {
-        let domWindow = xulWindow
+        var domWindow = xulWindow
             .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
             .getInterface(Components.interfaces.nsIDOMWindowInternal);
 
