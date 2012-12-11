@@ -51,8 +51,8 @@ var observer = {
     }
 };
 
-function startup(data, reason) {
-    let defaults = Services.prefs.getDefaultBranch('extensions.CommentBlocker.');
+function install(data, reason) {
+    var defaults = Services.prefs.getDefaultBranch('extensions.CommentBlocker.');
     defaults.setBoolPref('interface_display_locationbar', true);
     defaults.setBoolPref('interface_display_statusbar', true);
     defaults.setIntPref('interface_behaviour_leftclick', 1);
@@ -61,7 +61,9 @@ function startup(data, reason) {
     defaults.setBoolPref('rules_unknown_display', false);
     defaults.setBoolPref('rules_listed_display', true);
     defaults.setCharPref('websites', '');
+}
 
+function startup(data, reason) {
     Services.scriptloader.loadSubScript('chrome://CommentBlocker/content/application.js',this);
     Services.scriptloader.loadSubScript('chrome://CommentBlocker/content/firefox/overlay.js',this);
 
