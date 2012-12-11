@@ -31,10 +31,10 @@
             </menupopup>
         </menulist>
     </setting>
-    <setting pref="extensions.CommentBlocker.rules_unknown_display" type="bool" title="&CommentBlocker.options.rules_listed;">
+    <setting pref="extensions.CommentBlocker.rules_unknown_display" type="bool" title="&CommentBlocker.options.rules_unknown;">
         &CommentBlocker.options.rules_trust;
     </setting>
-    <setting pref="extensions.CommentBlocker.rules_listed_display" type="bool" title="&CommentBlocker.options.rules_unknown;">
+    <setting pref="extensions.CommentBlocker.rules_listed_display" type="bool" title="&CommentBlocker.options.rules_listed;">
         &CommentBlocker.options.rules_trust;
     </setting>
     <setting pref="test" type="control" title="&CommentBlocker.options.pane_websites;">
