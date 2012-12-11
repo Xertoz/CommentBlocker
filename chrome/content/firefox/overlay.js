@@ -42,7 +42,8 @@ var cbOverlay = {
         * Determine what to do & do it when the user clicks the status bar icon
         */
         onClickIcon: function(event) {
-            var contentDocument = event.target.ownerDocument.defaultView.content.document;
+            var browserWindow = event.target.ownerDocument.defaultView;
+            var contentDocument = browserWindow.content.document;
             
             switch (event.button) {
                 case 0: // Left click
@@ -75,7 +76,7 @@ var cbOverlay = {
                 break;
                 
                 case 3:
-                    window.openDialog('chrome://CommentBlocker/content/options.xul','Preferences','chrome,titlebar,toolbar,centerscreen,modal');
+                    browserWindow.BrowserOpenAddonsMgr('addons://detail/'+encodeURIComponent('commentblocker@xertoz.se')+'/preferences');
                 break;
             }
             
