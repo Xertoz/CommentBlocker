@@ -65,7 +65,7 @@ function install(data, reason) {
 
 function startup(data, reason) {
     Services.scriptloader.loadSubScript('chrome://CommentBlocker/content/application.js',this);
-    Services.scriptloader.loadSubScript('chrome://CommentBlocker/content/firefox/overlay.js',this);
+    Services.scriptloader.loadSubScript('chrome://CommentBlocker/content/overlay.js',this);
 
     var windows = Services.wm.getEnumerator('navigator:browser');
     while (windows.hasMoreElements())
