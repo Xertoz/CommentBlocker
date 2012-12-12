@@ -46,7 +46,7 @@ var cbOverlay = {
              */
             setDisabled: function() {
                 this.button.image = 'chrome://CommentBlocker/skin/status_disabled.png';
-                this.button.getElementById('cbToolbarButton').disabled = false;
+                this.button.disabled = false;
             },
 
             /**
