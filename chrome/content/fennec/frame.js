@@ -15,18 +15,18 @@ var callback = {
     },
 
     /**
-    * The stylesheet service
-    */
+     * The stylesheet service
+     */
     sss: null,
 
     /**
-    * The URI to the stylesheet
-    */
+     * The URI to the stylesheet
+     */
     uri: null,
 
     /**
-    * Use the stylesheet?
-    */
+     * Use the stylesheet?
+     */
     useCSS: function(use) {
         if (use && !callback.sss.sheetRegistered(callback.uri, callback.sss.AGENT_SHEET))
             callback.sss.loadAndRegisterSheet(callback.uri, callback.sss.AGENT_SHEET);
@@ -35,31 +35,54 @@ var callback = {
     }
 };
 
-// Whenever a page is loaded - parse it
-addEventListener('load',function(evt) {
-    CommentBlocker.parser.initDocument(evt.target,callback);
+var listeners = {
+    load: function(evt) {
+        CommentBlocker.parser.initDocument(evt.target,callback);
 
-    if (content.document == evt.target) {
-        callback.useCSS(evt.target.CommentBlocker.enabled);
+        if (content.document == evt.target) {
+            callback.useCSS(evt.target.CommentBlocker.enabled);
 
-        evt.target.CommentBlocker.comments = CommentBlocker.parser.hasComments(content.document.body);
+            evt.target.CommentBlocker.comments = CommentBlocker.parser.hasComments(content.document.body);
 
-        sendAsyncMessage('CommentBlocker:ToggleButton',evt.target.CommentBlocker);
+            sendAsyncMessage('CommentBlocker:ToggleButton',evt.target.CommentBlocker);
+        }
+    },
+
+    tabSelect: function() {
+        if (typeof(content.document.CommentBlocker) != 'undefined')
+            sendAsyncMessage('CommentBlocker:ToggleButton',content.document.CommentBlocker);
+    },
+
+    toggleComments: function(aMessage) {
+        CommentBlocker.toggleComments(content.document);
+
+        sendAsyncMessage('CommentBlocker:ToggleButton',content.document.CommentBlocker);
+    },
+
+    unload: function(aMessage) {
+        callback.useCSS(false);
+
+        removeEventListener('load', listeners.load, true);
+
+        removeMessageListener('CommentBlocker:ToggleComments', listeners.toggleComments);
+        removeMessageListener('CommentBlocker:TabSelected', listeners.tabSelect);
+        removeMessageListener('CommentBlocker:Unload', listeners.unload);
+
+        sendAsyncMessage('CommentBlocker:Unload');
     }
-},true);
+};
+
+// Whenever a page is loaded - parse it
+addEventListener('load', listeners.load, true);
 
 // When the toggle request is issued
-addMessageListener('CommentBlocker:ToggleComments',function(aMessage) {
-    CommentBlocker.toggleComments(content.document);
-
-    sendAsyncMessage('CommentBlocker:ToggleButton',content.document.CommentBlocker);
-});
+addMessageListener('CommentBlocker:ToggleComments', listeners.toggleComments);
 
 // When the tab is switched
-addMessageListener('CommentBlocker:TabSelected',function() {
-    if (typeof(content.document.CommentBlocker) != 'undefined')
-        sendAsyncMessage('CommentBlocker:ToggleButton',content.document.CommentBlocker);
-});
+addMessageListener('CommentBlocker:TabSelected', listeners.tabSelect);
+
+// Listen for when to unload
+addMessageListener('CommentBlocker:Unload', listeners.unload);
 
 // Initiate the stylesheet service etc
 callback.sss = Components.classes["@mozilla.org/content/style-sheet-service;1"].getService(Components.interfaces.nsIStyleSheetService);

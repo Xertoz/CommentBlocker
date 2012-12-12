@@ -1,14 +1,14 @@
 /**
-* CommentBlocker's Fennec overlay object for this window
-*/
+ * CommentBlocker's Fennec overlay object for this window
+ */
 var cbOverlay = {
     /**
-    * GUI API for Fennec
-    */
+     * GUI API for Fennec
+     */
     gui: {
         /**
-        * Show a notification that we have stopped a submission
-        */
+         * Show a notification that we have stopped a submission
+         */
         stopSubmission: function(doc) {
             var window = cbOverlay.gui.window;
             var nb = window.Browser.getNotificationBox();
@@ -31,10 +31,10 @@ var cbOverlay = {
                     }]
                 );
         },
-        
+
         /**
-        * Toolbar button API
-        */
+         * Toolbar button API
+         */
         toolbar: {
             /**
              * The toolbar button itself
@@ -42,24 +42,24 @@ var cbOverlay = {
             button: null,
 
             /**
-            * Set as disabled
-            */
+             * Set as disabled
+             */
             setDisabled: function() {
                 this.button.image = 'chrome://CommentBlocker/skin/status_disabled.png';
                 this.button.getElementById('cbToolbarButton').disabled = false;
             },
-            
+
             /**
-            * Set as enabled
-            */
+             * Set as enabled
+             */
             setEnabled: function() {
                 this.button.image = 'chrome://CommentBlocker/skin/status_enabled.png';
                 this.button.disabled = false;
             },
-            
+
             /**
-            * Set as inactive
-            */
+             * Set as inactive
+             */
             setInactive: function() {
                 this.button.image = 'chrome://CommentBlocker/skin/status_inactive.png';
                 this.button.disabled = true;
@@ -70,6 +70,43 @@ var cbOverlay = {
          * A reference to the app's window
          */
         window: null
+    },
+
+    /**
+     * Various listeners
+     */
+    listeners: {
+        unload: function() {
+            // Remove the toolbar button
+            cbOverlay.gui.toolbar.button.parentNode.removeChild(cbOverlay.gui.toolbar.button);
+
+            // Remove the frame script and all the associated listeners
+            var window = cbOverlay.gui.window;
+            window.messageManager.removeDelayedFrameScript('chrome://CommentBlocker/content/fennec/frame.js');
+            window.messageManager.removeMessageListener('CommentBlocker:ToggleButton', cbOverlay.listeners.toggleButton);
+            window.window.document.getElementById('tabs').removeEventListener('TabSelect', cbOverlay.listeners.tabSelect, false);
+            window.messageManager.removeMessageListener('CommentBlocker:StopSubmission', cbOverlay.listeners.stopSubmission);
+            window.messageManager.removeMessageListener('CommentBlocker:Unload', cbOverlay.listeners.unload);
+        },
+
+        tabSelect: function(evt) {
+            window.Browser.selectedBrowser.messageManager.sendAsyncMessage('CommentBlocker:TabSelected');
+        },
+
+        stopSubmission: function(aMessage) {
+            cbOverlay.gui.stopSubmission(aMessage.json);
+        },
+
+        toggleButton: function(aMessage) {
+            if (aMessage.json.comments) {
+                if (aMessage.json.enabled)
+                    cbOverlay.gui.toolbar.setEnabled();
+                else
+                    cbOverlay.gui.toolbar.setDisabled();
+            }
+            else
+                cbOverlay.gui.toolbar.setInactive();
+        }
     },
 
     /**
@@ -97,28 +134,26 @@ var cbOverlay = {
         window.messageManager.loadFrameScript('chrome://CommentBlocker/content/fennec/frame.js', true);
 
         // Listen for parsed messages from the children that tell us to update the UI
-        window.messageManager.addMessageListener('CommentBlocker:ToggleButton', function(aMessage) {
-            if (aMessage.json.comments) {
-                if (aMessage.json.enabled)
-                    cbOverlay.gui.toolbar.setEnabled();
-                else
-                    cbOverlay.gui.toolbar.setDisabled();
-            }
-            else
-                cbOverlay.gui.toolbar.setInactive();
-        });
+        window.messageManager.addMessageListener('CommentBlocker:ToggleButton', cbOverlay.listeners.toggleButton);
 
         // Make sure we have the right toolbar button when changing tabs
-        window.window.document.getElementById('tabs').addEventListener('TabSelect',function(evt) {
-            window.Browser.selectedBrowser.messageManager.sendAsyncMessage('CommentBlocker:TabSelected');
-        },false);
+        window.window.document.getElementById('tabs').addEventListener('TabSelect', cbOverlay.listeners.tabSelect, false);
 
         // Listen for form submissions to be stopped
-        window.messageManager.addMessageListener('CommentBlocker:StopSubmission',function(aMessage) {
-            cbOverlay.gui.stopSubmission(aMessage.json);
-        });
+        window.messageManager.addMessageListener('CommentBlocker:StopSubmission', cbOverlay.listeners.stopSubmission);
+
+        // Listen for addon unloading
+        window.messageManager.addMessageListener('CommentBlocker:Unload', cbOverlay.listeners.unload);
 
         // Save a reference to the window
         cbOverlay.gui.window = window;
+    },
+
+    /**
+     * Unload the window
+     */
+    unload: function(window) {
+        // Tell the content process to unload
+        window.messageManager.sendAsyncMessage('CommentBlocker:Unload');
     }
 };
