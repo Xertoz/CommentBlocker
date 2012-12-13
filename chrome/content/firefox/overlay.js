@@ -161,7 +161,15 @@ var cbOverlay = {
             urlBarImage.setAttribute('height','16');
             urlBar.appendChild(urlBarImage);
         }
-        
+
+        // Initate any open documents
+        for (var i=0;i<window.gBrowser.browsers.length;++i) {
+            var contentDocument = window.gBrowser.getBrowserAtIndex(i).contentDocument;
+
+            if (contentDocument.body)
+                CommentBlocker.parser.initDocument(contentDocument, cbOverlay);
+        }
+
         cbOverlay.useCSS(true);
         
         window.addEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,true);
