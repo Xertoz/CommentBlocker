@@ -1,168 +1,159 @@
-// Load CommentBlocker!
-Components.utils.import('chrome://CommentBlocker/content/application.jsm');
-
 /**
-* CommentBlocker's Fennec overlay object for this window
-*/
-var cbOverlay = {};
-
-/**
-* CommentBlocker's GUI API for Firefox
-*/
-cbOverlay.gui = {
+ * CommentBlocker's Fennec overlay object for this window
+ */
+var cbOverlay = {
     /**
-    * Show a notification that we have stopped a submission
-    */
-    stopSubmission: function(doc) {
-        var nb = Browser.getNotificationBox();
-        var n = nb.getNotificationWithValue('commentblocker-dangerous-form');
-        if (n)
-            n.label = CommentBlocker.strings.GetStringFromName('submissionDenied');
-        else
-            nb.appendNotification(
-                CommentBlocker.strings.GetStringFromName('submissionDenied'),
-                'commentblocker-dangerous-form',
-                'chrome://commentblocker/skin/status_enabled_16.png',
-                nb.PRIORITY_WARNING_HIGH,
-                [{
-                    label: CommentBlocker.strings.GetStringFromName('show'),
-                    accessKey: 'S',
-                    popup: null,
-                    callback: function() {
-                        CommentBlocker.parser.show(Browser.selectedBrowser.contentDocument);
-                    }
-                }]
-            );
-    },
-    
-    /**
-    * Toolbar button API
-    */
-    toolbar: {
+     * GUI API for Fennec
+     */
+    gui: {
         /**
-        * Set as disabled
-        */
-        setDisabled: function() {
-            document.getElementById('cbToolbarButton').image = 'chrome://CommentBlocker/skin/status_disabled.png';
-            document.getElementById('cbToolbarButton').disabled = false;
-        },
-        
-        /**
-        * Set as enabled
-        */
-        setEnabled: function() {
-            document.getElementById('cbToolbarButton').image = 'chrome://CommentBlocker/skin/status_enabled.png';
-            document.getElementById('cbToolbarButton').disabled = false;
-        },
-        
-        /**
-        * Set as inactive
-        */
-        setInactive: function() {
-            document.getElementById('cbToolbarButton').image = 'chrome://CommentBlocker/skin/status_inactive.png';
-            document.getElementById('cbToolbarButton').disabled = true;
-        }
-    },
-    
-    /**
-    * Update the UI interface
-    */
-    update: function(doc) {
-        if (Browser.selectedBrowser.contentDocument != doc)
-            return;
-        
-        // For failsafe, hide the icon if CommentBlocker is not initialized
-        if (!CommentBlocker.parser.isInitialized(doc))
-            return cbOverlay.gui.toolbar.setInactive();
-        
-        // Find out wether this site is trusted / enabled
-        var trusted = CommentBlocker.isTrusted(doc);
-        var enabled = doc.CommentBlocker.enabled;
-        var comments = CommentBlocker.parser.comments(doc);
-        
-        // Update icon image & text
-        if (comments) {
-            if (enabled)
-                cbOverlay.gui.toolbar.setEnabled();
+         * Show a notification that we have stopped a submission
+         */
+        stopSubmission: function(doc) {
+            var window = cbOverlay.gui.window;
+            var nb = window.Browser.getNotificationBox();
+            var n = nb.getNotificationWithValue('commentblocker-dangerous-form');
+            if (n)
+                n.label = CommentBlocker.strings.GetStringFromName('submissionDenied');
             else
-                cbOverlay.gui.toolbar.setDisabled();
-        }
-        else
-            cbOverlay.gui.toolbar.setInactive();
-    }
-};
+                nb.appendNotification(
+                    CommentBlocker.strings.GetStringFromName('submissionDenied'),
+                    'commentblocker-dangerous-form',
+                    'chrome://commentblocker/skin/status_enabled_16.png',
+                    nb.PRIORITY_WARNING_HIGH,
+                    [{
+                        label: CommentBlocker.strings.GetStringFromName('show'),
+                        accessKey: 'S',
+                        popup: null,
+                        callback: function() {
+                            window.Browser.selectedBrowser.messageManager.sendAsyncMessage('CommentBlocker:ToggleComments');
+                        }
+                    }]
+                );
+        },
 
-/**
-* Manage options for the addon
-*/
-cbOverlay.options = {
-    addWebsite: function() {
-        var hostname = prompt('URL:');
-        
-        if (!hostname)
-            return;
-        
-        CommentBlocker.toggleListed(hostname);
-        var e = document.createElement('listitem'); 
-        e.setAttribute('label',hostname);
-        document.getElementById('cbWebsites').appendChild(e);
-    },
-    
-    deleteWebsite: function() {
-        CommentBlocker.toggleListed(document.getElementById('cbWebsites').currentItem.getAttribute('label'));
-        document.getElementById('cbWebsites').removeChild(document.getElementById('cbWebsites').currentItem);
-    },
-    
-    loadWebsites: function() {
-        for (var i=0;i<CommentBlocker.websites.length;i++) {
-                var e = document.createElement('listitem'); 
-                e.setAttribute('label',CommentBlocker.websites[i]);
-                document.getElementById('cbWebsites').appendChild(e);
+        /**
+         * Toolbar button API
+         */
+        toolbar: {
+            /**
+             * The toolbar button itself
+             */
+            button: null,
+
+            /**
+             * Set as disabled
+             */
+            setDisabled: function() {
+                this.button.image = 'chrome://CommentBlocker/skin/status_disabled.png';
+                this.button.disabled = false;
+            },
+
+            /**
+             * Set as enabled
+             */
+            setEnabled: function() {
+                this.button.image = 'chrome://CommentBlocker/skin/status_enabled.png';
+                this.button.disabled = false;
+            },
+
+            /**
+             * Set as inactive
+             */
+            setInactive: function() {
+                this.button.image = 'chrome://CommentBlocker/skin/status_inactive.png';
+                this.button.disabled = true;
             }
+        },
+
+        /**
+         * A reference to the app's window
+         */
+        window: null
+    },
+
+    /**
+     * Various listeners
+     */
+    listeners: {
+        unload: function() {
+            // Remove the toolbar button
+            cbOverlay.gui.toolbar.button.parentNode.removeChild(cbOverlay.gui.toolbar.button);
+
+            // Remove the frame script and all the associated listeners
+            var window = cbOverlay.gui.window;
+            window.messageManager.removeDelayedFrameScript('chrome://CommentBlocker/content/fennec/frame.js');
+            window.messageManager.removeMessageListener('CommentBlocker:ToggleButton', cbOverlay.listeners.toggleButton);
+            window.window.document.getElementById('tabs').removeEventListener('TabSelect', cbOverlay.listeners.tabSelect, false);
+            window.messageManager.removeMessageListener('CommentBlocker:StopSubmission', cbOverlay.listeners.stopSubmission);
+            window.messageManager.removeMessageListener('CommentBlocker:Unload', cbOverlay.listeners.unload);
+        },
+
+        tabSelect: function(evt) {
+            window.Browser.selectedBrowser.messageManager.sendAsyncMessage('CommentBlocker:TabSelected');
+        },
+
+        stopSubmission: function(aMessage) {
+            cbOverlay.gui.stopSubmission(aMessage.json);
+        },
+
+        toggleButton: function(aMessage) {
+            if (aMessage.json.comments) {
+                if (aMessage.json.enabled)
+                    cbOverlay.gui.toolbar.setEnabled();
+                else
+                    cbOverlay.gui.toolbar.setDisabled();
+            }
+            else
+                cbOverlay.gui.toolbar.setInactive();
+        }
+    },
+
+    /**
+     * Load the addon into a window
+     */
+    load: function(window) {
+        // Add the toolbar button
+        var toolbar = window.document.getElementById('browser-controls');
+        var forward = window.document.getElementById('tool-forward');
+        var button = window.document.createElement('toolbarbutton');
+        button.setAttribute('id', 'cbToolbarButton');
+        button.setAttribute('image', 'chrome://CommentBlocker/skin/status_inactive.png');
+        button.setAttribute('class', 'button-control');
+        button.setAttribute('insert-after', 'tool-forward');
+        button.setAttribute('disabled', 'true');
+        button.addEventListener('command', function(event) {
+            window.messageManager.sendAsyncMessage('CommentBlocker:ToggleComments');
+        }, false);
+        toolbar.insertBefore(button, forward.nextSibling);
+
+        // Save a reference to the button for future usage
+        cbOverlay.gui.toolbar.button = button;
+
+        // Run code in the content processes
+        window.messageManager.loadFrameScript('chrome://CommentBlocker/content/fennec/frame.js', true);
+
+        // Listen for parsed messages from the children that tell us to update the UI
+        window.messageManager.addMessageListener('CommentBlocker:ToggleButton', cbOverlay.listeners.toggleButton);
+
+        // Make sure we have the right toolbar button when changing tabs
+        window.window.document.getElementById('tabs').addEventListener('TabSelect', cbOverlay.listeners.tabSelect, false);
+
+        // Listen for form submissions to be stopped
+        window.messageManager.addMessageListener('CommentBlocker:StopSubmission', cbOverlay.listeners.stopSubmission);
+
+        // Listen for addon unloading
+        window.messageManager.addMessageListener('CommentBlocker:Unload', cbOverlay.listeners.unload);
+
+        // Save a reference to the window
+        cbOverlay.gui.window = window;
+    },
+
+    /**
+     * Unload the window
+     */
+    unload: function(window) {
+        // Tell the content process to unload
+        window.messageManager.sendAsyncMessage('CommentBlocker:Unload');
     }
 };
-
-window.addEventListener('load',function() {
-    // Handle everything else in child processes
-    messageManager.loadFrameScript('chrome://CommentBlocker/content/fennec/frame.js',true);
-    
-    // Listen for parsed messages from the children
-    messageManager.addMessageListener('CommentBlocker:DocumentParsed',function(aMessage) {
-        if (aMessage.json.comments.length) {
-            if (aMessage.json.enabled)
-                cbOverlay.gui.toolbar.setEnabled();
-            else
-                cbOverlay.gui.toolbar.setDisabled();
-        }
-        else
-            cbOverlay.gui.toolbar.setInactive();
-    });
-    
-    // Listen for toggling of comments
-    messageManager.addMessageListener('CommentBlocker:ToggleComments',function(aMessage) {
-        if (aMessage.json.comments.length) {
-            if (aMessage.json.enabled)
-                cbOverlay.gui.toolbar.setEnabled();
-            else
-                cbOverlay.gui.toolbar.setDisabled();
-        }
-        else
-            cbOverlay.gui.toolbar.setInactive();
-    });
-    
-    // Listen for form submissions to be stopped
-    messageManager.addMessageListener('CommentBlocker:StopSubmission',function(aMessage) {
-        cbOverlay.gui.stopSubmission(aMessage.json);
-    });
-    
-    // Make sure we have the right toolbar button when changing tabs
-    document.getElementById('tabs').addEventListener('TabSelect',function(evt) {
-        Browser.selectedBrowser.messageManager.sendAsyncMessage('CommentBlocker:TabSelected');
-    },false);
-    
-    // Load websites into the preferences
-    document.addEventListener('AddonOptionsLoad',function(evt) {
-        if (evt.target.id == 'urn:mozilla:item:commentblocker@xertoz.se')
-            cbOverlay.options.loadWebsites();
-    },false);
-},false);

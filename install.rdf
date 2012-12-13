@@ -3,14 +3,16 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>commentblocker@xertoz.se</em:id>
     <em:type>2</em:type>
+    <em:bootstrap>true</em:bootstrap>
     <em:name>CommentBlocker</em:name>
-    <em:version>3.0.4</em:version>
+    <em:version>4.0</em:version>
     <em:homepageURL>http://www.commentblocker.org/</em:homepageURL>
     <em:iconURL>chrome://CommentBlocker/skin/status_enabled.png</em:iconURL>
     <em:creator>Mattias Lindholm</em:creator>
     <em:contributor>http://www.wefunction.com/function-free-icon-set</em:contributor>
     <em:description>Hide comments per default on websites and use a button to show them.</em:description>
     <em:optionsURL>chrome://CommentBlocker/content/options.xul</em:optionsURL>
+    <em:optionsType>2</em:optionsType>
     <em:translator>mozillazg</em:translator>
     <em:translator>Volodymyr Savchuk</em:translator>
     <em:translator>nikneyim</em:translator>
@@ -27,16 +29,16 @@
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
-        <em:minVersion>4.0</em:minVersion>
-        <em:maxVersion>12.0a1</em:maxVersion>
+        <em:minVersion>12.0</em:minVersion>
+        <em:maxVersion>20.0a1</em:maxVersion>
       </Description>
     </em:targetApplication>
     <em:targetApplication>
       <!-- Fennec -->
       <Description>
         <em:id>{a23983c0-fd0e-11dc-95ff-0800200c9a66}</em:id> <!-- Fennec -->
-        <em:minVersion>4.0</em:minVersion>
-        <em:maxVersion>11.0a1</em:maxVersion>
+        <em:minVersion>10.0</em:minVersion>
+        <em:maxVersion>20.0a1</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>
