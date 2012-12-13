@@ -77,7 +77,10 @@ var CommentBlocker = {
         */
         hasComments: function(elem) {
             return elem.querySelector(
-                '[id*="comment"], [id*="Comment"], [id*="COMMENT"], [class*="comment"], [class*="Comment"], [class*="COMMENT"], #disqus_thread'
+                '[id*="comment"], [id*="Comment"], [id*="COMMENT"], ' +
+                '[class*="comment"], [class*="Comment"], [class*="COMMENT"], ' +
+                '[name*="comment"], [name*="Comment"], [name*="COMMENT"], ' +
+                '#disqus_thread'
             ) != null;
         },
 
