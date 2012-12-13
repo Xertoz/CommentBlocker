@@ -11,8 +11,8 @@
         <hbox>
             <listbox id="cbWebsites" width="300"></listbox>
             <vbox>
-                <button label="+" onclick="CommentBlocker.options.addWebsite();" />
-                <button label="-" onclick="CommentBlocker.options.deleteWebsite();" />
+                <button id="cbWebsitesAdd" label="+" />
+                <button id="cbWebsitesRemove" label="-" />
             </vbox>
         </hbox>
     </setting>

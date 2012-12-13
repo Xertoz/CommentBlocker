@@ -1,3 +1,5 @@
-.CommentBlocker.cbIsActive {
+body.CommentBlocker [id*="comment"], body.CommentBlocker [id*="Comment"], body.CommentBlocker [id*="COMMENT"],
+body.CommentBlocker [class*="comment"], body.CommentBlocker [class*="Comment"], body.CommentBlocker [class*="COMMENT"],
+body.CommentBlocker #disqus_thread {
     display:none !important;
 }

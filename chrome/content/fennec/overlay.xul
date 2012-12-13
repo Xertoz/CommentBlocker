@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "chrome://CommentBlocker/locale/overlay.dtd">
-<overlay id="CommentBlocker-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <script src="chrome://CommentBlocker/content/fennec/overlay.js" />
-    <vbox id="browser-controls">
-        <toolbarbutton id="cbToolbarButton" image="chrome://CommentBlocker/skin/status_inactive.png" oncommand="Browser.selectedBrowser.messageManager.sendAsyncMessage('CommentBlocker:ToggleComments');" class="button-control" insertafter="tool-forward" disabled="true" />
-    </vbox>
-</overlay>
