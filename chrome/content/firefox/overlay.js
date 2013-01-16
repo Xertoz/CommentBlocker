@@ -38,6 +38,13 @@ var cbOverlay = {
     * Listening API for Firefox
     */
     listener: {
+		/**
+		 * Listen for tab changes
+		 */
+		onChangeTab: function(event) {
+			cbOverlay.updateUI(event.target.ownerDocument.defaultView.gBrowser.contentDocument);
+		},
+
         /**
         * Determine what to do & do it when the user clicks the status bar icon
         */
@@ -90,57 +97,7 @@ var cbOverlay = {
         onProgressChange: function(aBrowser, aWebProgress, aRequest) {
         	if (!aBrowser.contentDocument.CommentBlocker && aBrowser.contentDocument.body)
         		CommentBlocker.parser.initDocument(aBrowser.contentDocument, cbOverlay);
-        },
-        
-        /**
-        * Handle repaints in our own little way
-        */
-        onRepaint: function(evt) {
-            // Make sure we are the only worker
-            if (cbOverlay.listener.onRepaintWorking)
-                return;
-            cbOverlay.listener.onRepaintWorking = true;
-            
-            // We need these variables while working
-            var document = evt.target.document;
-            var contentDocument = evt.target.content.document;
-            var cbLocationBar = document.getElementById('cbLocationBar');
-            
-            // Find out wether this site is trusted / enabled
-            if (contentDocument.CommentBlocker) {
-	            var enabled = contentDocument.CommentBlocker.enabled;
-	            var comments = CommentBlocker.parser.hasComments(contentDocument.body);
-	            
-	            // If there are no comments on this page, do not show the icon
-	            if (cbLocationBar) {
-	                if (CommentBlocker.settings.getBoolPref('interface_display_locationbar'))
-	                    cbLocationBar.hidden = !comments;
-	                else
-	                    cbLocationBar.hidden = true;
-	            }
-	            
-	            // Update icon image & text
-	            if (comments) {
-	                var icon = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
-	                var tooltip = enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled');
-	                
-	                if (cbLocationBar) {
-	                    cbLocationBar.src = icon;
-	                    cbLocationBar.tooltipText = tooltip;
-	                }
-	            }
-            }
-            else if (cbLocationBar)
-            	cbLocationBar.hidden = true;
-            
-            // Release the lock
-            cbOverlay.listener.onRepaintWorking = false;
-        },
-        
-        /**
-        * Flag to prevent infinite loops
-        */
-        onRepaintWorking: false
+        }
     },
     
     /**
@@ -170,10 +127,20 @@ var cbOverlay = {
                 CommentBlocker.parser.initDocument(contentDocument, cbOverlay);
         }
 
+		// Listen for tab switches
+		window.gBrowser.tabContainer.addEventListener('TabSelect', cbOverlay.listener.onChangeTab, false);
+
         cbOverlay.useCSS(true);
-        
-        window.addEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,true);
+
         window.gBrowser.addTabsProgressListener(cbOverlay.listener);
+    },
+
+    /**
+     * Observe DOM mutation events
+     */
+    observe: function(objects, instance) {
+		// Update any UI elements
+		cbOverlay.updateUI(objects[0].target.ownerDocument);
     },
     
     /**
@@ -193,6 +160,15 @@ var cbOverlay = {
         var document = window.document;
         
         cbOverlay.useCSS(false);
+
+		//window.gBrowser.tabContainer.removeEventListener('TabSelect', cbOverlay.listener.onChangeTab, false);
+
+		for (var i=0;i<window.gBrowser.browsers.length;++i) {
+			var contentDocument = window.gBrowser.getBrowserAtIndex(i).contentDocument;
+
+			if (contentDocument.CommentBlocker)
+				CommentBlocker.parser.uninitDocument(contentDocument);
+		}
         
         var cbStatusBar = document.getElementById('cbStatusBar');
         if (cbStatusBar)
@@ -201,10 +177,59 @@ var cbOverlay = {
         var cbLocationBar = document.getElementById('cbLocationBar');
         if (cbLocationBar)
             cbLocationBar.parentNode.removeChild(cbLocationBar);
-        
-        window.removeEventListener('MozAfterPaint',cbOverlay.listener.onRepaint,true);
+
         window.gBrowser.removeTabsProgressListener(cbOverlay.listener);
     },
+
+	/**
+	 * Request an update of the UI
+	 * The UI will only be updated if it is deemed necessary
+	 * @param contentDocument Source document causing the update to be requested
+	 */
+	updateUI: function(contentDocument) {
+		// Find the affected chrome window
+		var windows = Services.wm.getEnumerator('navigator:browser');
+		while (windows.hasMoreElements()) {
+			var window = windows.getNext();
+			var browser = window.gBrowser.getBrowserForDocument(contentDocument);
+
+			if (browser) {
+				// Do nothing if the document ain't visible
+				if (window.gBrowser.contentDocument != contentDocument)
+					return;
+
+				var document = window.document;
+			}
+		}
+		var cbLocationBar = document.getElementById('cbLocationBar');
+
+		// Find out wether this site is trusted / enabled
+		if (contentDocument.CommentBlocker) {
+			var enabled = contentDocument.CommentBlocker.enabled;
+			var comments = CommentBlocker.parser.hasComments(contentDocument.body);
+
+			// If there are no comments on this page, do not show the icon
+			if (cbLocationBar) {
+				if (CommentBlocker.settings.getBoolPref('interface_display_locationbar'))
+					cbLocationBar.hidden = !comments;
+				else
+					cbLocationBar.hidden = true;
+			}
+
+			// Update icon image & text
+			if (comments) {
+				var icon = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
+				var tooltip = enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled');
+
+				if (cbLocationBar) {
+					cbLocationBar.src = icon;
+					cbLocationBar.tooltipText = tooltip;
+				}
+			}
+		}
+		else if (cbLocationBar)
+			cbLocationBar.hidden = true;
+	},
     
     /**
     * Use the stylesheet?

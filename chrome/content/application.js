@@ -99,18 +99,23 @@ var CommentBlocker = {
             // CommentBlocker settings for this document
             document.CommentBlocker = {
                 callback: callback,
-                enabled: !CommentBlocker.isTrusted(document.location.hostname)
+                enabled: !CommentBlocker.isTrusted(document.location.hostname),
+                observer: new document.defaultView.MutationObserver(callback.observe)
             };
             
             if (document.CommentBlocker.enabled)
             	CommentBlocker.parser.hide(document);
             
             // Prevent forms from being sent with hidden elements
-            document.addEventListener('submit',function(e) {
-                if (e.originalTarget.ownerDocument.CommentBlocker.enabled
-                && CommentBlocker.parser.hasComments(e.originalTarget.ownerDocument.body))
-                    CommentBlocker.parser.stopSubmission(e);
-            },true);
+            document.addEventListener('submit', CommentBlocker.submit, true);
+
+            // Observe mutations
+            document.CommentBlocker.observer.observe(document.body, {
+                attributeFilter: ['id', 'class', 'name'],
+                attributes: true,
+                childList: true,
+                subtree: true
+            });
         },
 
         /**
@@ -131,7 +136,16 @@ var CommentBlocker = {
             
             // Secondly, show a notification that we did.
             evt.originalTarget.ownerDocument.CommentBlocker.callback.gui.stopSubmission(evt.originalTarget.ownerDocument);
-        }
+        },
+
+		/**
+		 * Uninitialize a document for being supervised by CommentBlocker
+		 */
+		uninitDocument: function(document) {
+			document.CommentBlocker.observer.disconnect();
+			document.CommentBlocker = undefined;
+			document.removeEventListener('submit', CommentBlocker.submit, true);
+		}
     },
 
     /**
@@ -150,6 +164,15 @@ var CommentBlocker = {
     * The addon's strings
     */
     strings: null,
+
+	/**
+	 * Listen to submit events of documents
+	 */
+	submit: function(e) {
+		if (e.originalTarget.ownerDocument.CommentBlocker.enabled
+			&& CommentBlocker.parser.hasComments(e.originalTarget.ownerDocument.body))
+			CommentBlocker.parser.stopSubmission(e);
+	},
 
     /**
     * Invert show/hide status on document
