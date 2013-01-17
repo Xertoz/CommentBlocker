@@ -67,7 +67,7 @@ function startup(data, reason) {
     defaults.setCharPref('websites', '');
 
     Services.scriptloader.loadSubScript('chrome://CommentBlocker/content/application.js',this);
-	CommentBlocker.load();
+    CommentBlocker.load();
     Services.scriptloader.loadSubScript('chrome://CommentBlocker/content/overlay.js',this);
 
     var windows = Services.wm.getEnumerator('navigator:browser');
@@ -86,5 +86,5 @@ function shutdown(data, reason) {
     while (windows.hasMoreElements())
         cbOverlay.unload(windows.getNext());
 
-	CommentBlocker.unload();
+    CommentBlocker.unload();
 }

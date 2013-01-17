@@ -11,8 +11,8 @@ var cbOverlay = {
         */
         stopSubmission: function(doc) {
             var nb = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-            	.getService(Components.interfaces.nsIWindowMediator)
-            	.getMostRecentWindow('navigator:browser').gBrowser.getNotificationBox();
+                .getService(Components.interfaces.nsIWindowMediator)
+                .getMostRecentWindow('navigator:browser').gBrowser.getNotificationBox();
             var n = nb.getNotificationWithValue('commentblocker-dangerous-form');
             if (n)
                 n.label = CommentBlocker.strings.GetStringFromName('submissionDenied');
@@ -38,12 +38,12 @@ var cbOverlay = {
     * Listening API for Firefox
     */
     listener: {
-		/**
-		 * Listen for tab changes
-		 */
-		onChangeTab: function(event) {
-			cbOverlay.updateUI(event.target.ownerDocument.defaultView.gBrowser.contentDocument);
-		},
+        /**
+         * Listen for tab changes
+         */
+        onChangeTab: function(event) {
+            cbOverlay.updateUI(event.target.ownerDocument.defaultView.gBrowser.contentDocument);
+        },
 
         /**
         * Determine what to do & do it when the user clicks the status bar icon
@@ -95,8 +95,8 @@ var cbOverlay = {
          * Handle document loads
          */
         onProgressChange: function(aBrowser, aWebProgress, aRequest) {
-        	if (!CommentBlocker.map.has(aBrowser.contentDocument) && aBrowser.contentDocument.body)
-        		CommentBlocker.parser.initDocument(aBrowser.contentDocument, cbOverlay);
+            if (!CommentBlocker.map.has(aBrowser.contentDocument) && aBrowser.contentDocument.body)
+                CommentBlocker.parser.initDocument(aBrowser.contentDocument, cbOverlay);
         }
     },
     
@@ -127,8 +127,8 @@ var cbOverlay = {
                 CommentBlocker.parser.initDocument(contentDocument, cbOverlay);
         }
 
-		// Listen for tab switches
-		window.gBrowser.tabContainer.addEventListener('TabSelect', cbOverlay.listener.onChangeTab, false);
+        // Listen for tab switches
+        window.gBrowser.tabContainer.addEventListener('TabSelect', cbOverlay.listener.onChangeTab, false);
 
         cbOverlay.useCSS(true);
 
@@ -139,8 +139,8 @@ var cbOverlay = {
      * Observe DOM mutation events
      */
     observe: function(objects, instance) {
-		// Update any UI elements
-		cbOverlay.updateUI(objects[0].target.ownerDocument);
+        // Update any UI elements
+        cbOverlay.updateUI(objects[0].target.ownerDocument);
     },
     
     /**
@@ -161,14 +161,14 @@ var cbOverlay = {
         
         cbOverlay.useCSS(false);
 
-		 window.gBrowser.tabContainer.removeEventListener('TabSelect', cbOverlay.listener.onChangeTab, false);
+         window.gBrowser.tabContainer.removeEventListener('TabSelect', cbOverlay.listener.onChangeTab, false);
 
-		for (var i=0;i<window.gBrowser.browsers.length;++i) {
-			var contentDocument = window.gBrowser.getBrowserAtIndex(i).contentDocument;
+        for (var i=0;i<window.gBrowser.browsers.length;++i) {
+            var contentDocument = window.gBrowser.getBrowserAtIndex(i).contentDocument;
 
-			if (CommentBlocker.map.has(contentDocument))
-				CommentBlocker.parser.uninitDocument(contentDocument);
-		}
+            if (CommentBlocker.map.has(contentDocument))
+                CommentBlocker.parser.uninitDocument(contentDocument);
+        }
         
         var cbStatusBar = document.getElementById('cbStatusBar');
         if (cbStatusBar)
@@ -181,56 +181,56 @@ var cbOverlay = {
         window.gBrowser.removeTabsProgressListener(cbOverlay.listener);
     },
 
-	/**
-	 * Request an update of the UI
-	 * The UI will only be updated if it is deemed necessary
-	 * @param contentDocument Source document causing the update to be requested
-	 */
-	updateUI: function(contentDocument) {
-		// Find the affected chrome window
-		var windows = Services.wm.getEnumerator('navigator:browser');
-		while (windows.hasMoreElements()) {
-			var window = windows.getNext();
-			var browser = window.gBrowser.getBrowserForDocument(contentDocument);
+    /**
+     * Request an update of the UI
+     * The UI will only be updated if it is deemed necessary
+     * @param contentDocument Source document causing the update to be requested
+     */
+    updateUI: function(contentDocument) {
+        // Find the affected chrome window
+        var windows = Services.wm.getEnumerator('navigator:browser');
+        while (windows.hasMoreElements()) {
+            var window = windows.getNext();
+            var browser = window.gBrowser.getBrowserForDocument(contentDocument);
 
-			if (browser) {
-				// Do nothing if the document ain't visible
-				if (window.gBrowser.contentDocument != contentDocument)
-					return;
+            if (browser) {
+                // Do nothing if the document ain't visible
+                if (window.gBrowser.contentDocument != contentDocument)
+                    return;
 
-				var document = window.document;
-			}
-		}
-		var cbLocationBar = document.getElementById('cbLocationBar');
+                var document = window.document;
+            }
+        }
+        var cbLocationBar = document.getElementById('cbLocationBar');
 
-		// Find out wether this site is trusted / enabled
-		if (CommentBlocker.map.has(contentDocument)) {
-			var state = CommentBlocker.map.get(contentDocument);
-			var enabled = state.enabled;
-			var comments = CommentBlocker.parser.hasComments(contentDocument.body);
+        // Find out wether this site is trusted / enabled
+        if (CommentBlocker.map.has(contentDocument)) {
+            var state = CommentBlocker.map.get(contentDocument);
+            var enabled = state.enabled;
+            var comments = CommentBlocker.parser.hasComments(contentDocument.body);
 
-			// If there are no comments on this page, do not show the icon
-			if (cbLocationBar) {
-				if (CommentBlocker.settings.getBoolPref('interface_display_locationbar'))
-					cbLocationBar.hidden = !comments;
-				else
-					cbLocationBar.hidden = true;
-			}
+            // If there are no comments on this page, do not show the icon
+            if (cbLocationBar) {
+                if (CommentBlocker.settings.getBoolPref('interface_display_locationbar'))
+                    cbLocationBar.hidden = !comments;
+                else
+                    cbLocationBar.hidden = true;
+            }
 
-			// Update icon image & text
-			if (comments) {
-				var icon = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
-				var tooltip = enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled');
+            // Update icon image & text
+            if (comments) {
+                var icon = enabled ? 'chrome://CommentBlocker/skin/status_enabled_16.png' : 'chrome://CommentBlocker/skin/status_disabled_16.png';
+                var tooltip = enabled ? CommentBlocker.strings.GetStringFromName('enabled') : CommentBlocker.strings.GetStringFromName('disabled');
 
-				if (cbLocationBar) {
-					cbLocationBar.src = icon;
-					cbLocationBar.tooltipText = tooltip;
-				}
-			}
-		}
-		else if (cbLocationBar)
-			cbLocationBar.hidden = true;
-	},
+                if (cbLocationBar) {
+                    cbLocationBar.src = icon;
+                    cbLocationBar.tooltipText = tooltip;
+                }
+            }
+        }
+        else if (cbLocationBar)
+            cbLocationBar.hidden = true;
+    },
     
     /**
     * Use the stylesheet?
