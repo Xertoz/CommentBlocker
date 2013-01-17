@@ -56,6 +56,11 @@ var CommentBlocker = {
         CommentBlocker.configure();
     },
 
+	/**
+	 * Key-value map of document states
+	 */
+	map: new WeakMap(),
+
     /**
     * Observe preference changes
     */
@@ -88,7 +93,9 @@ var CommentBlocker = {
         * Hide all elements
         */
         hide: function(document) {
-            document.CommentBlocker.enabled = true;
+			var state = CommentBlocker.map.get(document);
+			state.enabled = true;
+			CommentBlocker.map.set(document, state);
             document.body.classList.add('CommentBlocker');
         },
 
@@ -96,21 +103,22 @@ var CommentBlocker = {
         * Initialize a document for being supervised by CommentBlocker
         */
         initDocument: function(document,callback) {
-            // CommentBlocker settings for this document
-            document.CommentBlocker = {
-                callback: callback,
-                enabled: !CommentBlocker.isTrusted(document.location.hostname),
-                observer: new document.defaultView.MutationObserver(callback.observe)
-            };
+			// CommentBlocker settings for this document
+			var state = {
+				callback: callback,
+				enabled: !CommentBlocker.isTrusted(document.location.hostname),
+				observer: new document.defaultView.MutationObserver(callback.observe)
+			};
+			CommentBlocker.map.set(document, state);
             
-            if (document.CommentBlocker.enabled)
+            if (state.enabled)
             	CommentBlocker.parser.hide(document);
             
             // Prevent forms from being sent with hidden elements
             document.addEventListener('submit', CommentBlocker.submit, true);
 
             // Observe mutations
-            document.CommentBlocker.observer.observe(document.body, {
+            state.observer.observe(document.body, {
                 attributeFilter: ['id', 'class', 'name'],
                 attributes: true,
                 childList: true,
@@ -122,7 +130,9 @@ var CommentBlocker = {
         * Show all elements
         */
         show: function(document) {
-            document.CommentBlocker.enabled = false;
+			var state = CommentBlocker.map.get(document);
+			state.enabled = false;
+			CommentBlocker.map.set(document, state);
             document.body.classList.remove('CommentBlocker');
         },
 
@@ -130,21 +140,24 @@ var CommentBlocker = {
         * Stop submission of a form that's got blocked elements
         */
         stopSubmission: function(evt) {
+			var state = CommentBlocker.map.get(evt.originalTarget.ownerDocument);
             // First off, stop the submission!
             evt.stopPropagation();
             evt.preventDefault();
             
             // Secondly, show a notification that we did.
-            evt.originalTarget.ownerDocument.CommentBlocker.callback.gui.stopSubmission(evt.originalTarget.ownerDocument);
+            state.callback.gui.stopSubmission(evt.originalTarget.ownerDocument);
         },
 
 		/**
 		 * Uninitialize a document for being supervised by CommentBlocker
 		 */
 		uninitDocument: function(document) {
-			document.CommentBlocker.observer.disconnect();
-			document.CommentBlocker = undefined;
+			var state = CommentBlocker.map.get(document);
+			CommentBlocker.parser.show(document);
+			state.observer.disconnect();
 			document.removeEventListener('submit', CommentBlocker.submit, true);
+			CommentBlocker.map.delete(document);
 		}
     },
 
@@ -169,7 +182,8 @@ var CommentBlocker = {
 	 * Listen to submit events of documents
 	 */
 	submit: function(e) {
-		if (e.originalTarget.ownerDocument.CommentBlocker.enabled
+		var state = CommentBlocker.map.get(e.originalTarget.ownerDocument);
+		if (state.enabled
 			&& CommentBlocker.parser.hasComments(e.originalTarget.ownerDocument.body))
 			CommentBlocker.parser.stopSubmission(e);
 	},
@@ -178,7 +192,8 @@ var CommentBlocker = {
     * Invert show/hide status on document
     */
     toggleComments: function(document) {
-        if (document.CommentBlocker.enabled == true)
+		var state = CommentBlocker.map.get(document);
+        if (state.enabled == true)
             CommentBlocker.parser.show(document);
         else
             CommentBlocker.parser.hide(document);
@@ -201,12 +216,16 @@ var CommentBlocker = {
         
         CommentBlocker.saveListed();
     },
+
+	/**
+	 * Unload CommentBlocker
+	 */
+	unload: function() {
+		CommentBlocker.settings.removeObserver('', CommentBlocker, false);
+	},
     
     /**
     * The list of websites configured by the user
     */
     websites: null
 };
-
-// Finally, run the load event
-CommentBlocker.load();

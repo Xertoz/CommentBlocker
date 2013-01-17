@@ -95,7 +95,7 @@ var cbOverlay = {
          * Handle document loads
          */
         onProgressChange: function(aBrowser, aWebProgress, aRequest) {
-        	if (!aBrowser.contentDocument.CommentBlocker && aBrowser.contentDocument.body)
+        	if (!CommentBlocker.map.has(aBrowser.contentDocument) && aBrowser.contentDocument.body)
         		CommentBlocker.parser.initDocument(aBrowser.contentDocument, cbOverlay);
         }
     },
@@ -161,12 +161,12 @@ var cbOverlay = {
         
         cbOverlay.useCSS(false);
 
-		//window.gBrowser.tabContainer.removeEventListener('TabSelect', cbOverlay.listener.onChangeTab, false);
+		 window.gBrowser.tabContainer.removeEventListener('TabSelect', cbOverlay.listener.onChangeTab, false);
 
 		for (var i=0;i<window.gBrowser.browsers.length;++i) {
 			var contentDocument = window.gBrowser.getBrowserAtIndex(i).contentDocument;
 
-			if (contentDocument.CommentBlocker)
+			if (CommentBlocker.map.has(contentDocument))
 				CommentBlocker.parser.uninitDocument(contentDocument);
 		}
         
@@ -204,8 +204,9 @@ var cbOverlay = {
 		var cbLocationBar = document.getElementById('cbLocationBar');
 
 		// Find out wether this site is trusted / enabled
-		if (contentDocument.CommentBlocker) {
-			var enabled = contentDocument.CommentBlocker.enabled;
+		if (CommentBlocker.map.has(contentDocument)) {
+			var state = CommentBlocker.map.get(contentDocument);
+			var enabled = state.enabled;
 			var comments = CommentBlocker.parser.hasComments(contentDocument.body);
 
 			// If there are no comments on this page, do not show the icon
