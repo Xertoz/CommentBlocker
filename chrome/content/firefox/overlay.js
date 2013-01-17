@@ -119,6 +119,16 @@ var cbOverlay = {
             urlBar.appendChild(urlBarImage);
         }
 
+        // Create the addon bar button
+        var addonBar = document.getElementById('addon-bar');
+        if (addonBar) {
+            var addonBarButton = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'toolbarbutton');
+            addonBarButton.addEventListener('click', cbOverlay.listener.onClickIcon, false);
+            addonBarButton.setAttribute('id', 'cbStatusBar');
+            addonBarButton.setAttribute('image', 'chrome://CommentBlocker/skin/status_inactive_16.png');
+            addonBar.appendChild(addonBarButton);
+        }
+
         // Initate any open documents
         for (var i=0;i<window.gBrowser.browsers.length;++i) {
             var contentDocument = window.gBrowser.getBrowserAtIndex(i).contentDocument;
@@ -202,6 +212,7 @@ var cbOverlay = {
             }
         }
         var cbLocationBar = document.getElementById('cbLocationBar');
+        var cbStatusBar = document.getElementById('cbStatusBar');
 
         // Find out wether this site is trusted / enabled
         if (CommentBlocker.map.has(contentDocument)) {
@@ -216,6 +227,8 @@ var cbOverlay = {
                 else
                     cbLocationBar.hidden = true;
             }
+            if (cbStatusBar)
+                cbStatusBar.hidden = !CommentBlocker.settings.getBoolPref('interface_display_statusbar');
 
             // Update icon image & text
             if (comments) {
@@ -226,10 +239,20 @@ var cbOverlay = {
                     cbLocationBar.src = icon;
                     cbLocationBar.tooltipText = tooltip;
                 }
+                if (cbStatusBar) {
+                    cbStatusBar.image = icon;
+                    cbStatusBar.label = tooltip;
+                }
             }
         }
-        else if (cbLocationBar)
-            cbLocationBar.hidden = true;
+        else {
+            if (cbLocationBar)
+                cbLocationBar.hidden = true;
+            if (cbStatusBar) {
+                cbStatusBar.image = 'chrome://CommentBlocker/skin/status_enabled_16.png';
+                cbStatusBar.label = CommentBlocker.strings.GetStringFromName('inactive');
+            }
+        }
     },
     
     /**

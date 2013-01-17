@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mydialog SYSTEM "chrome://CommentBlocker/locale/options.dtd">
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <setting pref="extensions.CommentBlocker.interface_display_locationbar" type="bool" title="&CommentBlocker.options.interface_display_locationbar;" />
+    <setting pref="extensions.CommentBlocker.interface_display_statusbar" type="bool" title="&CommentBlocker.options.interface_display_statusbar;" />
     <setting pref="extensions.CommentBlocker.interface_behaviour_leftclick" type="menulist" title="&CommentBlocker.options.interface_behaviour_leftclick;">
         <menulist>
             <menupopup>
