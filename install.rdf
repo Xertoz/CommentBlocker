@@ -5,7 +5,7 @@
     <em:type>2</em:type>
     <em:bootstrap>true</em:bootstrap>
     <em:name>CommentBlocker</em:name>
-    <em:version>4.0.2b2</em:version>
+    <em:version>4.0.2</em:version>
     <em:homepageURL>http://www.commentblocker.org/</em:homepageURL>
     <em:iconURL>chrome://CommentBlocker/skin/status_enabled.png</em:iconURL>
     <em:creator>Mattias Lindholm</em:creator>
