@@ -96,7 +96,7 @@ var CommentBlocker = {
             var state = CommentBlocker.map.get(document);
             state.enabled = true;
             CommentBlocker.map.set(document, state);
-            document.body.classList.add('CommentBlocker');
+            document.body.setAttribute('CommentBlocker', 'true');
         },
 
         /**
@@ -119,7 +119,7 @@ var CommentBlocker = {
 
             // Observe mutations
             state.observer.observe(document.body, {
-                attributeFilter: ['id', 'class', 'name'],
+                attributeFilter: ['CommentBlocker', 'id', 'class', 'name'],
                 attributes: true,
                 childList: true,
                 subtree: true
@@ -133,7 +133,10 @@ var CommentBlocker = {
             var state = CommentBlocker.map.get(document);
             state.enabled = false;
             CommentBlocker.map.set(document, state);
-            document.body.classList.remove('CommentBlocker');
+            document.body.removeAttribute('CommentBlocker');
+            var event = document.createEvent('UIEvents');
+            event.initUIEvent('resize', true, false, document.defaultView, 0);
+            document.defaultView.dispatchEvent(event);
         },
 
         /**
