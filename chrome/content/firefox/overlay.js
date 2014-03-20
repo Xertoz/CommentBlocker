@@ -86,6 +86,8 @@ var cbOverlay = {
                     browserWindow.BrowserOpenAddonsMgr('addons://detail/'+encodeURIComponent('commentblocker@xertoz.se')+'/preferences');
                 break;
             }
+
+            cbOverlay.updateUI(contentDocument);
             
             event.stopPropagation();
             event.preventDefault();

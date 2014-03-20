@@ -119,7 +119,7 @@ var CommentBlocker = {
 
             // Observe mutations
             state.observer.observe(document.body, {
-                attributeFilter: ['CommentBlocker', 'id', 'class', 'name'],
+                attributeFilter: ['id', 'class', 'name'],
                 attributes: true,
                 childList: true,
                 subtree: true
