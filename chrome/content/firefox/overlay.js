@@ -1,3 +1,5 @@
+Components.utils.import('resource:///modules/CustomizableUI.jsm');
+
 /**
 * CommentBlocker's Firefox overlay object for this window
 */
@@ -122,14 +124,15 @@ var cbOverlay = {
         }
 
         // Create the addon bar button
-        var addonBar = document.getElementById('addon-bar');
-        if (addonBar) {
-            var addonBarButton = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'toolbarbutton');
-            addonBarButton.addEventListener('click', cbOverlay.listener.onClickIcon, false);
-            addonBarButton.setAttribute('id', 'cbStatusBar');
-            addonBarButton.setAttribute('image', 'chrome://CommentBlocker/skin/status_inactive_16.png');
-            addonBar.appendChild(addonBarButton);
-        }
+        CustomizableUI.createWidget({
+            id : 'CommentBlocker',
+            defaultArea : CustomizableUI.AREA_NAVBAR,
+            label : 'CommentBlocker',
+            tooltiptext: CommentBlocker.strings.GetStringFromName('inactive'),
+            type: 'button',
+            image: 'chrome://CommentBlocker/skin/status_inactive_16.png',
+            onClick : cbOverlay.listener.onClickIcon
+        });
 
         // Initate any open documents
         for (var i=0;i<window.gBrowser.browsers.length;++i) {
@@ -181,11 +184,9 @@ var cbOverlay = {
             if (CommentBlocker.map.has(contentDocument))
                 CommentBlocker.parser.uninitDocument(contentDocument);
         }
-        
-        var cbStatusBar = document.getElementById('cbStatusBar');
-        if (cbStatusBar)
-            cbStatusBar.parentNode.removeChild(cbStatusBar);
-        
+
+        CustomizableUI.destroyWidget('CommentBlocker');
+
         var cbLocationBar = document.getElementById('cbLocationBar');
         if (cbLocationBar)
             cbLocationBar.parentNode.removeChild(cbLocationBar);
@@ -214,7 +215,7 @@ var cbOverlay = {
             }
         }
         var cbLocationBar = document.getElementById('cbLocationBar');
-        var cbStatusBar = document.getElementById('cbStatusBar');
+        var widget = CustomizableUI.getWidget('CommentBlocker').instances[0].node;
 
         // Find out wether this site is trusted / enabled
         if (CommentBlocker.map.has(contentDocument)) {
@@ -229,8 +230,6 @@ var cbOverlay = {
                 else
                     cbLocationBar.hidden = true;
             }
-            if (cbStatusBar)
-                cbStatusBar.hidden = !CommentBlocker.settings.getBoolPref('interface_display_statusbar');
 
             // Update icon image & text
             if (comments) {
@@ -241,19 +240,15 @@ var cbOverlay = {
                     cbLocationBar.src = icon;
                     cbLocationBar.tooltipText = tooltip;
                 }
-                if (cbStatusBar) {
-                    cbStatusBar.image = icon;
-                    cbStatusBar.label = tooltip;
-                }
+                widget.image = icon;
+                widget.tooltipText = tooltip;
             }
         }
         else {
             if (cbLocationBar)
                 cbLocationBar.hidden = true;
-            if (cbStatusBar) {
-                cbStatusBar.image = 'chrome://CommentBlocker/skin/status_enabled_16.png';
-                cbStatusBar.label = CommentBlocker.strings.GetStringFromName('inactive');
-            }
+            widget.image = 'chrome://CommentBlocker/skin/status_inactive_16.png';
+            widget.tooltipText = CommentBlocker.strings.GetStringFromName('inactive');
         }
     },
     
@@ -261,9 +256,18 @@ var cbOverlay = {
     * Use the stylesheet?
     */
     useCSS: function(use) {
-        if (use && !cbOverlay.sss.sheetRegistered(cbOverlay.uri, cbOverlay.sss.AGENT_SHEET))
+        if (use && !cbOverlay.sss.sheetRegistered(cbOverlay.uri, cbOverlay.sss.AGENT_SHEET)) {
             cbOverlay.sss.loadAndRegisterSheet(cbOverlay.uri, cbOverlay.sss.AGENT_SHEET);
-        else if (!use && cbOverlay.sss.sheetRegistered(cbOverlay.uri, cbOverlay.sss.AGENT_SHEET))
+            cbOverlay.sss.loadAndRegisterSheet(cbOverlay.WIDGET_CSS, cbOverlay.sss.AGENT_SHEET);
+        }
+        else if (!use && cbOverlay.sss.sheetRegistered(cbOverlay.uri, cbOverlay.sss.AGENT_SHEET)) {
             cbOverlay.sss.unregisterSheet(cbOverlay.uri, cbOverlay.sss.AGENT_SHEET);
-    }
+            cbOverlay.sss.unregisterSheet(cbOverlay.WIDGET_CSS, cbOverlay.sss.AGENT_SHEET);
+        }
+    },
+
+    /**
+     * URI to the widget CSS
+     */
+    WIDGET_CSS: Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI("chrome://CommentBlocker/content/firefox/widget.css", null, null)
 };

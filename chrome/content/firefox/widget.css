@@ -1,0 +1,22 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+@-moz-document url('chrome://browser/content/browser.xul') {
+    #CommentBlocker {
+        list-style-image: url('chrome://CommentBlocker/skin/status_inactive_16.png');
+    }
+
+    #CommentBlocker[cui-areatype="menu-panel"],
+    toolbarpaletteitem[place="palette"] > #CommentBlocker {
+        list-style-image: url('chrome://CommentBlocker/skin/status_inactive_16.png');
+    }
+
+    /* Necessary to mimic the behavior of all other buttons, which are darker when
+  pressed.
+  #aus-view-button:hover:active:not([disabled="true"]):not([cui-areatype="menu-panel"]) {
+  list-style-image: url("chrome://aus-view/skin/icon32-dark.png");
+  }*/
+
+    #CommentBlocker {
+        width: 16px;
+    }
+}
