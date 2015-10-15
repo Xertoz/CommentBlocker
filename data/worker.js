@@ -121,21 +121,19 @@ var observer = new MutationObserver(function(records) {
 });
 
 // Define an event for attaching the observer and then register it
-var e = function() {
-	// Start observing
-	observer.observe(document.body, {
-		attributeFilter: ['id', 'class', 'name'],
-		attributes: true,
-		childList: true,
-		subtree: true
-	});
-	
-	// Unregister the event
-	document.removeEventListener('DOMNodeInserted', e, false);
-};
-document.addEventListener('DOMNodeInserted', e, false);
-if (document.body)
-	e();
+var bodyserver = new MutationObserver(function() {
+	if (document.body) {
+		observer.observe(document.body, {
+			attributeFilter: ['id', 'class', 'name'],
+			attributes: true,
+			childList: true,
+			subtree: true
+		});
+		
+		bodyserver.disconnect();
+	}
+});
+bodyserver.observe(document.documentElement, { childList: true });
 
 // Attach a safeguard to prevent forms with hidden elements from being sent
 document.addEventListener('submit', function(event) {
