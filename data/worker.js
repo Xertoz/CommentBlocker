@@ -137,6 +137,19 @@ document.addEventListener('DOMNodeInserted', e, false);
 if (document.body)
 	e();
 
+// Attach a safeguard to prevent forms with hidden elements from being sent
+document.addEventListener('submit', function(event) {
+	// Prevent forms when blocking is active and comments exist
+	if (block === true && comments.count !== 0) {
+		// Stop the event from propagating!
+		event.stopPropagation();
+		event.preventDefault();
+		
+		// Tell the guardian a submission was stopped
+		self.port.emit('form');
+	}
+}, true);
+
 // Fired when the UI wants to show comments
 self.port.on('show', function() {
 	block = false;
