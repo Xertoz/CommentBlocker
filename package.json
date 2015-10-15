@@ -10,7 +10,6 @@
   "preferences": [{
     "name": "rules_listed_display",
 	"title": "Block comments",
-	"description": "Block all comments on new websites that you visit. You can then enable them on that website by using the addon button.",
 	"type": "bool",
 	"value": true
   }]
