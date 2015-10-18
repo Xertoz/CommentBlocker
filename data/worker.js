@@ -118,6 +118,10 @@ var observer = new MutationObserver(function(records) {
 	// If the amount of comments changed, tell the main UI
 	if (oldCount !== comments.count)
 		self.port.emit('comments', comments.count);
+	
+	// If new comments were found, tell the main UI
+	if (block && (oldCount === null || oldCount === 0) && comments.count > 0)
+		self.port.emit('blocked');
 });
 
 // Define an event for attaching the observer and then register it
