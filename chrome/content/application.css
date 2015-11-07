@@ -1,5 +1,5 @@
 body[CommentBlocker] [id*="comment"], body[CommentBlocker] [id*="Comment"], body[CommentBlocker] [id*="COMMENT"],
-body[CommentBlocker] [class*="comment"], body[CommentBlocker] [class*="Comment"], body[CommentBlocker] [class*="COMMENT"],
+body[CommentBlocker] [class*="comment"]:not([class*="commentable"]), body[CommentBlocker] [class*="Comment"]:not([class*="Commentable"]), body[CommentBlocker] [class*="COMMENT"]:not([class*="COMMENTABLE"]),
 body[CommentBlocker] [name*="comment"], body[CommentBlocker] [name*="Comment"], body[CommentBlocker] [name*="COMMENT"],
 body[CommentBlocker] #disqus_thread {
     display:none !important;
