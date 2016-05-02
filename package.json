@@ -5,7 +5,7 @@
   "description": "Simplify your everyday browsing by blocking comments on the web!",
   "author": "Mattias Lindholm",
   "license": "LGPL 3",
-  "version": "5.0.0-b4",
+  "version": "5.0.0-b5",
   "main": "lib/main.js",
   "preferences": [{
     "name": "rules_listed_display",
