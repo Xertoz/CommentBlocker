@@ -1,0 +1,18 @@
+{
+	"extensionDescription": {
+		"message": "Förenkla ditt surfande genom att blockera kommentarer på nätet!",
+		"description": "A descriptive text about what the addon does."
+	},
+	"formBlocked": {
+		"message": "Det finns dolda kommentarer på sidan. Du måste visa de för att kunna skicka formuläret!",
+		"description": "Displayed notification text when the addon stops the user from sending a form with hidden comments."
+	},
+	"hideComments": {
+		"message": "Göm kommentarer",
+		"description": "Displayed on buttons to let the user hide comments."
+	},
+	"showComments": {
+		"message": "Visa kommentarer",
+		"description": "Displayed on buttons to let the user show comments."
+	}
+}

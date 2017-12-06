@@ -1,0 +1,37 @@
+{
+    "manifest_version": 2,
+    "name": "CommentBlocker",
+    "version": "6.0b1",
+	"default_locale": "en_US",
+    "description": "__MSG_extensionDescription__",
+    "applications": {
+        "gecko": {
+            "id": "commentblocker@xertoz.se",
+            "strict_min_version": "57.0"
+        }
+    },
+    "icons": {
+        "48": "icons/commentblocker-48.png"
+    },
+    "permissions": ["notifications", "storage"],
+    "page_action": {
+        "browser_style": true,
+        "default_icon": {
+            "16": "icons/off-16.png",
+            "19": "icons/off-19.png",
+            "32": "icons/off-32.png",
+            "38": "icons/off-38.png"
+        },
+        "default_title": "CommentBlocker"
+    },
+    "background": {
+            "scripts": ["background.js"]
+    },
+    "content_scripts": [
+        {
+            "matches": ["*://*/*"],
+            "css": ["content.css"],
+            "js": ["content.js"]
+        }
+    ]
+}

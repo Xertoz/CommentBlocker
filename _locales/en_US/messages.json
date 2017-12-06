@@ -1,0 +1,18 @@
+{
+	"extensionDescription": {
+		"message": "Simplify your browsing by blocking comments on the web!",
+		"description": "A descriptive text about what the addon does."
+	},
+	"formBlocked": {
+		"message": "There are hidden comments on the page. You must view them in order to submit the form!",
+		"description": "Displayed notification text when the addon stops the user from sending a form with hidden comments."
+	},
+	"hideComments": {
+		"message": "Hide comments",
+		"description": "Displayed on buttons to let the user hide comments."
+	},
+	"showComments": {
+		"message": "Show comments",
+		"description": "Displayed on buttons to let the user show comments."
+	}
+}
